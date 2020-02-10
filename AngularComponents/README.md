@@ -1,26 +1,26 @@
-# InfosComponent
+# angularComponents
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.20.
+The aim of this project is to generate web components to use in current MyHotel and Admin website.
+This is not an Angular entire app, but contains all necessary services, components and dependencies to generate web componets.
 
-## Development server
+## generate web component
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+ng build --prod --output-hashing=none
+node package_script.js
 
-## Code scaffolding
+This will generate a web component.
+Please refer to app.module.ts and package_script.js to get the details of the component.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+`export class AppModule { 
+  constructor(private injector: Injector){}
 
-## Build
+  ngDoBootstrap(){
+    const customElement= createCustomElement(YourInformationComponent,{injector:this.injector});
+    customElements.define('your-information',customElement);
+  }
+}
+`
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
 ## Further help
 
