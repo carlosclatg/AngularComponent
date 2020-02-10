@@ -1,0 +1,51 @@
+@import '~bootstrap/dist/css/bootstrap.min.css'
+@import '../../../src/styles.sass'
+
+    
+.title
+    font-family: Arial, Tahoma, sans-serif
+    font-size: 16px
+    font-weight: 700
+    color: $color6
+    line-height: 21px
+    padding: 0px
+
+#prepayment
+    //width: 100%
+    background-color: rgb(250, 250, 250)
+    border-radius: 0.5em
+
+.headerColumn
+    //width: 100%
+
+.fieldNamesColumn
+    @extends .fieldNames
+    font-weight: 700
+    
+
+.fieldValuesColumn
+    @extends .fieldNames
+    font-weight: 100
+    
+
+.column
+    @include columnMixin(16%)
+
+.columnTitle
+    @include columnMixin(95%)
+
+.arrowIcon
+    color: rgb(136, 124, 124) 
+
+.row
+    display: flex
+    width: 100%
+    //background-color: rgb(218, 210, 210)
+    margin: auto
+    //border-radius: 0.5em
+    padding-left: 2em
+    padding-bottom: 0.5em
+
+.row:after
+    display: table
+    clear: both

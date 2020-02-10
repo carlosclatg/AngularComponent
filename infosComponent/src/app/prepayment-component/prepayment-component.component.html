@@ -1,0 +1,64 @@
+<div class="container-fluid">
+    <mat-expansion-panel id="prepayment" expanded='false' (click)="click()">
+        <mat-expansion-panel-header class="headerColumn row">
+            <mat-panel-title>
+                <div class="columnTitle">
+                    <span class="title">{{translate('PREPAYMENT')}}</span>
+                </div>
+                <!-- <mat-icon class="arrowIcon">{{icon  ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</mat-icon> -->
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row fieldNamesColumn">
+            <div class="col-md-3">
+                <div class="fieldNamesColumn">{{translate('TARIFF_PLAN')}}</div>
+            </div>
+            <div class="col-md-2">
+                <div class="fieldNamesColumn">{{translate('APPLICATION')}}</div>
+            </div>
+            <div class="col-md-2">
+                <div class="fieldNamesColumn">{{translate('AMOUNT')}}</div>
+            </div>
+            <div class="col-md-2">
+                <div class="fieldNamesColumn">{{translate('FROM_DATE')}}</div>
+            </div>
+            <div class="col-md-2">
+                <div class="fieldNamesColumn">{{translate('TO_DATE')}}</div>
+            </div>
+            <div class="col-md-1">
+                <div class="fieldNamesColumn">{{translate('REFUNDABLE')}}</div>
+            </div>
+        </div>
+        <div *ngFor="let prepaymentRow of prePaymentConditions" class="row" >
+            <div class="col-md-3">
+                <div >
+                    {{prepaymentRow.tariff}}
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div >
+                    {{prepaymentRow.application}}
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div >
+                    {{prepaymentRow.amount}}
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div >
+                    {{prepaymentRow.fromDate}}
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div >
+                    {{prepaymentRow.toDate}}
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div >
+                    {{prepaymentRow.refundable}}
+                </div>
+            </div>
+        </div>
+    </mat-expansion-panel>
+</div>

@@ -1,0 +1,40 @@
+<div class="container-fluid">
+    <mat-expansion-panel id="priceFormat" expanded='false' (click)="click()">
+        <mat-expansion-panel-header class="headerColumn row">
+            <mat-panel-title>
+                <div class="columnTitle">
+                    <span class="title">{{translate('PRICE_FORMAT')}}</span>
+                </div>
+                <!-- <mat-icon class="arrowIcon">{{icon  ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</mat-icon> -->
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row">
+            <div class="fieldNamesColumn column16">{{translate('RATES_CALCULATION_BASE')}} : {{priceFormat.priceCalculationMode}}</div>
+        </div>
+        <div class="row">
+            <div class="fieldNamesColumn column16">{{translate('PRICE_FORMAT')}} : {{priceFormat.currencyCode}}</div>
+        </div>
+        <div class="row">
+            <div class="fieldNamesColumn column16">{{translate('PERIOD')}}</div>
+            <div class="fieldNamesColumn column16">{{translate('CODE')}}</div>
+            <div class="fieldNamesColumn column16">{{translate('TAX')}}</div>
+            <div class="fieldNamesColumn column16">{{translate('INCLUDED')}}</div>
+            <div class="fieldNamesColumn column16">{{translate('CLIENT_PROGRAM')}}</div>
+        </div>
+        <div *ngFor="let element of priceFormat.ratesData" class="row">
+            <ng-container
+                *ngIf="element.from && element.to; then isDate; else isNoDate">
+            </ng-container>
+            <ng-template #isDate>
+                <div class="fieldValuesColumn column20">{{element.from}} {{translate('TO')}} {{element.to}}</div>
+            </ng-template>
+            <ng-template #isNoDate>
+                <div class="fieldValuesColumn column16"></div>
+            </ng-template>
+            <div class="fieldValuesColumn column16">{{element.code}}</div>
+            <div class="fieldValuesColumn column16">{{element.tax}}</div>
+            <div class="fieldValuesColumn column16">{{element.included}}</div>
+            <div class="fieldValuesColumn column16">{{element.clientProgram}}</div>
+        </div>   
+    </mat-expansion-panel>
+</div>

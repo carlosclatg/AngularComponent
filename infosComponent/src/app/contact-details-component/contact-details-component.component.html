@@ -1,0 +1,46 @@
+<div class="container-fluid">
+    <mat-expansion-panel id="contactDetails" expanded='true' (click)="click()">
+            <mat-expansion-panel-header class="headerColumn row">
+                    <mat-panel-title>
+                        <div class="columnTitle">
+                            <span class="title">{{translate('CONTACT_1')}}</span>
+                        </div>
+                        <!-- <mat-icon class="arrowIcon">{{icon  ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</mat-icon> -->
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+        <div class="row">
+            <div class="fieldNamesColumn col-md-3">
+                <div>{{translate('NAME')}} :</div>
+                <div>{{translate('CHAIN')}} :</div>
+                <div>{{translate('ADDRESS')}} :</div>
+                <div>{{translate('POSTAL_CODE')}} :</div>
+                <div>{{translate('PHONE_LONG')}} :</div>
+                <div>{{translate('EMAIL')}} :</div>
+            </div>
+            <div class="fieldValuesColumn col-md-3">
+                <div>{{accomName}} </div>
+                <div>{{accomStars}}</div>
+                <div>{{address1}}</div>
+                <div>{{zip}}</div>
+                <div>{{faxForDirectBooking}}</div>
+                <div>{{formattedMailAddress}}</div>
+            </div>
+            <div class="fieldNamesColumn col-md-3">
+                <div>{{translate('CATEGORY')}} :</div>
+                <div>{{translate('BRAND')}} :</div><br/>
+                <div> </div>
+                <div>{{translate('CITY')}} :</div>
+                <div>{{translate('FAX')}} :</div>
+                <div> </div>
+            </div>
+            <div class="fieldValuesColumn col-md-3">
+                <div>***</div>
+                <div>__</div><br/>
+                <div> </div>
+                <div>{{city}}</div>
+                <div>{{faxIndicatifForDirectBooking}}</div>
+                <div>&nbsp;</div>
+            </div>
+        </div>
+    </mat-expansion-panel>
+</div>

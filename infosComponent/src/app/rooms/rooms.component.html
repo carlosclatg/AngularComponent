@@ -1,0 +1,69 @@
+<div class="container-fluid">
+    <mat-expansion-panel id="priceFormat" expanded='false' (click)="click()">
+        <mat-expansion-panel-header class="headerColumn">
+            <mat-panel-title>
+                <div class="columnTitle">
+                    <span class="title">{{translate('PRICE_FORMAT')}}</span>
+                </div>
+                <!-- <mat-icon class="arrowIcon">{{icon  ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</mat-icon> -->
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <!-- <div class="row"><div class="col-md-4 fieldNamesColumn">NR</div></div> -->
+        <div class="table-responsive">     
+            <div>
+                <div class="row fieldNamesColumn">
+                    <div class="col-md-3">
+                        <div class="fieldNamesColumn">{{translate('ROOM')}}</div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="fieldNamesColumn">{{translate('PAX')}}</div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="fieldNamesColumn">{{translate('ADULTS')}}</div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="fieldNamesColumn">{{translate('YOUNG')}}</div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="fieldNamesColumn">{{translate('CHILDREN')}}</div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="fieldNamesColumn">{{translate('BABY')}}</div>
+                    </div>
+                </div>
+                <div *ngFor="let chambre of chambres" class="row" >
+                    <div class="col-md-3">
+                        <div >
+                            {{chambre.label}}
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div >
+                            {{chambre.occupants.number1}} {{translate('TO')}} {{chambre.occupants.number2}}
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div >
+                            {{chambre.adults.number1}} {{translate('TO')}} {{chambre.adults.number2}}
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div >
+                            {{chambre.young.number1}} {{translate('TO')}} {{chambre.young.number2}}
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div >
+                            {{chambre.children.number1}} {{translate('TO')}} {{chambre.children.number2}}
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div >
+                            {{chambre.baby.number1}} {{translate('TO')}} {{chambre.baby.number2}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </mat-expansion-panel>
+</div>

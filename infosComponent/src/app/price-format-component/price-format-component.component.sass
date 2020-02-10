@@ -1,0 +1,79 @@
+@import '~bootstrap/dist/css/bootstrap.min.css'
+@import '../../../src/styles.sass'
+
+    
+.title
+    font-family: $fontFamily !important
+    font-size: 16px !important
+    font-weight: 700
+    color: $color6 !important
+    line-height: 21px !important
+    padding: 0px !important
+
+#priceFormat
+    //width: 100%
+    background-color: rgb(245, 236, 236)
+    border-radius: 0.5em
+
+.headerColumn
+    //width: 100%
+
+.fieldNamesColumn
+    @extend .fieldNames
+    font-weight: 700
+
+
+.fieldValuesColumn
+    @extend .fieldNames
+    font-weight: 100
+
+.column16
+    @include columnMixin(16%)
+.column20
+    @include columnMixin(20%)
+
+.columnTitle
+    float: left
+    width: 95%
+
+.arrowIcon
+    color: rgb(136, 124, 124) 
+
+.row
+    display: flex
+    width: 100%
+    //background-color: rgb(218, 210, 210)
+    margin: auto
+    //border-radius: 0.5em
+    padding-left: 2em
+    padding-bottom: 0.5em
+
+.row:after
+    display: table
+    clear: both
+
+.tooltip 
+  position: relative
+  display: inline-block
+  //border-bottom: 1px dotted black
+
+
+.tooltip .tooltiptext 
+    visibility: hidden
+    width: 120px
+    background-color: rgb(141, 136, 136)
+    opacity: 0.5
+    color: #fff
+    text-align: center
+    padding: 1em
+    border-radius: 6px
+    padding: 5px 0
+    /* Position the tooltip */
+    position: relative
+    z-index: 1
+    top: -20px
+    right: 50%
+
+
+.tooltip:hover .tooltiptext 
+  visibility: visible

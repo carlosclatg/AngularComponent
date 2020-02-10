@@ -1,0 +1,57 @@
+<div class="container-fluid">
+    <mat-expansion-panel id="salesConditions" expanded='false' (click)="click()">
+        <mat-expansion-panel-header class="headerColumn row">
+            <mat-panel-title>
+                <div class="columnTitle">
+                    <span class="title">{{translate('SALES_CONDITION')}}</span>
+                </div>
+                <!-- <mat-icon class="arrowIcon">{{icon  ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</mat-icon> -->
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row fieldNamesColumn">
+            <div class="col-md-3">
+                <div class="fieldNamesColumn">{{translate('TARIFF_PLAN')}}</div>
+            </div>
+            <div class="col-md-2">
+                <div class="fieldNamesColumn">{{translate('CANCELLATION')}}</div>
+
+            </div>
+            <div class="col-md-3">
+                <div class="fieldNamesColumn">{{translate('PENALTY')}}</div>
+            </div>
+            <div class="col-md-2">
+                <div class="fieldNamesColumn">{{translate('FROM_DATE')}}</div>
+            </div>
+            <div class="col-md-2">
+                <div class="fieldNamesColumn">{{translate('TO_DATE')}}</div>
+            </div>
+        </div>
+        <div *ngFor = "let salesRow of salesConditions"class="row">
+            <div class="col-md-3">
+                <div>
+                    {{salesRow.tariff}}
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div>
+                    {{salesRow.cancellation}}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div>
+                    {{salesRow.penalty}}
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div>
+                    {{salesRow.fromDate}}
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div>
+                    {{salesRow.toDate}}
+                </div>
+            </div>
+        </div>
+    </mat-expansion-panel>
+</div>

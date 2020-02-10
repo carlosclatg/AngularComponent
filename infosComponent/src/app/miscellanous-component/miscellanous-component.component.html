@@ -1,0 +1,32 @@
+<div class="container-fluid"> 
+    <mat-expansion-panel id="miscellanous" expanded='false' (click)="click()">
+        <mat-expansion-panel-header class="headerColumn row">
+                <mat-panel-title>
+                    <div class="columnTitle">
+                        <span class="title">{{translate('MISCELLANEOUS')}}</span>
+                    </div>
+                    <!-- <mat-icon class="arrowIcon">{{icon  ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</mat-icon> -->
+                </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row" *ngIf="infantMaxAgeExcluded">
+            <div class="fieldNamesColumn column">{{translate('FAMILY_AND_CHILDREN')}}</div>
+            <div class="fieldValuesColumn column">{{translate('BABY')}}</div>
+            <div class="fieldValuesColumn column">≤ {{infantMaxAgeExcluded}} {{translate('YEARS')}}</div>
+        </div>
+        <div class="row" *ngIf="childMaxAgeExcluded">
+            <div class="fieldValuesColumn column">&nbsp;</div>
+            <div class="fieldValuesColumn column">{{translate('CHILD')}}</div>
+            <div class="fieldValuesColumn column">≤ {{childMaxAgeExcluded}} {{translate('YEARS')}}</div>
+        </div>
+        <div class="row" *ngIf="teenagerMaxAgeExcluded">
+            <div class="fieldValuesColumn column">&nbsp;</div>
+            <div class="fieldValuesColumn column">{{translate('TEENAGER')}}</div>
+            <div class="fieldValuesColumn column">≤ {{teenagerMaxAgeExcluded}} {{translate('YEARS')}}</div>
+        </div>
+        <div class="row channelManager">
+            <div class="fieldNamesColumn column">{{translate('CHANNEL_MANAGER')}}</div>
+            <div class="fieldValuesColumn column">Othyssia</div>
+            <div class="fieldValuesColumn column">&nbsp;</div>
+        </div>
+    </mat-expansion-panel>
+</div>

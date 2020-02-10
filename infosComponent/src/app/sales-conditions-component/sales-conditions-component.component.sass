@@ -1,0 +1,47 @@
+@import '~bootstrap/dist/css/bootstrap.min.css'
+@import '../../../src/styles.sass'
+
+    
+.title
+    font-family: Arial, Tahoma, sans-serif
+    font-size: 16px
+    font-weight: 700
+    color: $color6
+    line-height: 21px
+    padding: 0px
+
+#salesConditions
+    //width: 100%
+    background-color: rgb(245, 236, 236)
+    border-radius: 0.5em
+
+.headerColumn
+    //width: 100%
+
+.fieldNamesColumn
+    @extend .fieldNames
+    font-weight: 700
+
+.fieldValuesColumn
+    @extend .fieldNames
+    font-weight: 700
+
+.column
+    @include columnMixin(20%)
+
+.columnTitle
+    @include columnMixin(95%)
+
+.arrowIcon
+    color: rgb(136, 124, 124) 
+
+.row
+    display: flex
+    width: 100%
+    margin: auto
+    padding-left: 2em
+    padding-bottom: 0.5em
+
+.row:after
+    display: table
+    clear: both

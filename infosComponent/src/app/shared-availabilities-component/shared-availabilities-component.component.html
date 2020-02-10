@@ -1,0 +1,33 @@
+<div class="container-fluid">
+    <mat-expansion-panel id="sharedAvailabilities" expanded='false' (click)="click()">
+        <mat-expansion-panel-header class="headerColumn">
+            <mat-panel-title>
+                <div class="columnTitle">
+                    <span class="columnTitle columnTitle--title">{{translate('SHARED_AVAILABILITIES')}}</span>
+                </div>
+                <!-- <mat-icon class="arrowIcon">{{icon  ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</mat-icon> -->
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <!-- <div class="row"><div class="col-md-4 fieldNamesColumn">NR</div></div> -->
+        <div class="table-responsive">     
+            <table *ngFor="let avail of sharedAvailList | keyvalue" class="table">
+                <thead class="fieldTitle"> {{avail.key}}
+                </thead>
+                <tbody>
+                    <tr class="fieldValues fieldValues--mainRow">
+                        <td class="fieldValues--columnName">{{translate('RATE_ACCESS_CODE_LABEL')}}</td>
+                        <td class="fieldValues--columnName">{{translate('RATE_ACCESS_CODE')}}</td>
+                        <td class="fieldValues--columnName">{{translate('FROM_DATE')}}</td>
+                        <td class="fieldValues--columnName">{{translate('TO_DATE')}}</td>
+                    </tr>
+                    <tr *ngFor="let rateRow of avail.value" class="fieldValues">
+                        <td class="fieldValues--columnData">{{rateRow.rateName}}</td>
+                        <td class="fieldValues--columnData">{{rateRow.rateAccesCodeString}}</td>
+                        <td class="fieldValues--columnData">{{rateRow.fromDate}}</td>
+                        <td class="fieldValues--columnData">{{rateRow.toDate}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> 
+    </mat-expansion-panel>
+</div>

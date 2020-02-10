@@ -1,0 +1,42 @@
+@import '~bootstrap/dist/css/bootstrap.min.css'
+@import '../../../src/styles.sass'
+
+.columnTitle  
+    &--title
+        font-family: $fontFamily
+        font-size: 16px
+        font-weight: 700
+        color: $color6
+        line-height: 21px
+        padding: 0px
+        margin: 0 auto
+
+#sharedAvailabilities
+    //width: 100%
+    background-color: rgb(245, 236, 236)
+    border-radius: 0.5em
+
+
+.fieldTitle
+    display: flex
+    justify-content: center
+    justify-items: center
+    justify-self: center
+    font-size: 1rem
+    font-family: $fontFamily
+
+.fieldValues
+    width: 100%
+    display: flex
+    flex-direction: row
+
+    &--mainRow
+        border: 0px 2px 0px 2px
+    &--columnName
+        @extend .cell
+        font-weight: 700
+    &--columnData
+        @extend .cell
+        border: 0px !important
+
+

@@ -1,0 +1,53 @@
+@import '~bootstrap/dist/css/bootstrap.min.css'
+@import '../../../src/styles.sass'
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons'
+
+    
+.title
+    @extend .fieldNames
+    font-weight: 700
+
+
+#contactDetails
+    background-color: rgb(250, 250, 250)
+    border-radius: 0.5em
+
+.headerColumn
+    //width: 100%
+
+.fieldNamesColumn
+    @extend .fieldNames
+    font-weight: 700
+
+
+.fieldValuesColumn
+    @extend .fieldNames
+    font-weight: 100
+
+
+
+.column
+    @include columnMixin(25%)
+
+.column2
+    @include columnMixin(50%)
+
+.column3
+    @include columnMixin(75%)
+
+.columnTitle
+    @include columnMixin(95%)
+
+.row
+    display: flex
+    width: 100%
+    margin: auto
+    padding-left: 2em
+    padding-bottom: 0.5em
+
+.row:after
+    display: table
+    clear: both
+
+.arrowIcon
+    color: rgb(136, 124, 124)   
