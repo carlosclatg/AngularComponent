@@ -5,13 +5,15 @@ This is not an Angular entire app, but contains all necessary services, componen
 
 ## generate web component
 
-ng build --prod --output-hashing=none
-node package_script.js
+* ng build --prod --output-hashing=none
+* node package_script.js
+
 
 This will generate a web component.
 Please refer to app.module.ts and package_script.js to get the details of the component.
 
-`export class AppModule { 
+```
+export class AppModule { 
   constructor(private injector: Injector){}
 
   ngDoBootstrap(){
@@ -19,7 +21,7 @@ Please refer to app.module.ts and package_script.js to get the details of the co
     customElements.define('your-information',customElement);
   }
 }
-`
+```
 
 
 ## Further help
