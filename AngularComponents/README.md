@@ -17,8 +17,8 @@ export class AppModule {
   constructor(private injector: Injector){}
 
   ngDoBootstrap(){
-    const customElement= createCustomElement(YourInformationComponent,{injector:this.injector});
-    customElements.define('your-information',customElement);
+    const customElement= createCustomElement(YourInformationComponent,{injector:this.injector}); // Angular will encapsulate YourInformationComponent
+    customElements.define('your-information',customElement); //This will create a component whose tag is "your-information"
   }
 }
 ```
