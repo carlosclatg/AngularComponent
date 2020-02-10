@@ -1,7 +1,7 @@
 # angularComponents
 
 The aim of this project is to generate web components to use in current MyHotel and Admin website.
-This is not an Angular entire app, but contains all necessary services, components and dependencies to generate web componets.
+This is not an Angular entire app, but contains all necessary services, components and dependencies to generate web components.
 
 ## generate web component
 
