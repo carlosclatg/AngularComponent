@@ -15,6 +15,7 @@ import { GlobalHttpInterceptorService } from './global-http-interceptor.service'
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { RoomsComponent } from './rooms/rooms.component';
+import { AvailabilityNewComponent } from './availability-new/availability-new.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { RoomsComponent } from './rooms/rooms.component';
     PriceFormatComponentComponent,
     MiscellanousComponentComponent,
     SharedAvailabilitiesComponentComponent,
-    RoomsComponent
+    RoomsComponent,
+    AvailabilityNewComponent
   ],
   imports: [
     BrowserModule,
