@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { AvailabilityAdd } from 'src/DTO/availabilityNew/availabilityAdd';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,12 @@ export class ComunicationService {
     return this.httpClient.post<Map<string, string>>(this.urli18n, i18Codes, this.httpOptions);
   }
 
+  //availabilityService
+  public getAvailByAccom() : Observable<AvailabilityAdd>{
+    return this.httpClient.post<any>(this.urlAvailInitialData,this.httpOptions);
+  }
+
+  //tests
   public getTestMessage() : Observable<any>{
     return this.httpClient.get<any>(this.urlAvail, this.httpOptions);
   }

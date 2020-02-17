@@ -8,6 +8,6 @@ const files = [
 './dist/infosComponent/main-es2015.js'
 ];
 await fs.ensureDir('elements');
-await concat(files, 'elements/infos-elements.js');
+await concat(files, 'elements/ng-avail-components.js');
 console.log('Process finished')
 })();

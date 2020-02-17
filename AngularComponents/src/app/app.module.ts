@@ -16,6 +16,9 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { RoomsComponent } from './rooms/rooms.component';
 import { AvailabilityNewComponent } from './availability-new/availability-new.component';
+import { DatesLoaderComponent } from './availability-new/dates-loader/dates-loader.component';
+import { RequestPossibleTableComponent } from './availability-new/request-possible-table/request-possible-table.component';
+import { ClientProgramAvailComponent } from './availability-new/client-program-avail/client-program-avail.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,10 @@ import { AvailabilityNewComponent } from './availability-new/availability-new.co
     MiscellanousComponentComponent,
     SharedAvailabilitiesComponentComponent,
     RoomsComponent,
-    AvailabilityNewComponent
+    AvailabilityNewComponent,
+    DatesLoaderComponent,
+    RequestPossibleTableComponent,
+    ClientProgramAvailComponent
   ],
   imports: [
     BrowserModule,
@@ -42,13 +48,14 @@ import { AvailabilityNewComponent } from './availability-new/availability-new.co
     { provide: HTTP_INTERCEPTORS, useClass: GlobalHttpInterceptorService, multi: true  },
     CookieService 
   ],
-  entryComponents: [YourInformationComponent]
+  entryComponents: [YourInformationComponent,
+  AvailabilityNewComponent]
 })
 export class AppModule { 
   constructor(private injector: Injector){}
 
   ngDoBootstrap(){
-    const customElement= createCustomElement(YourInformationComponent,{injector:this.injector});
-    customElements.define('your-information',customElement);
+    const customElement= createCustomElement(AvailabilityNewComponent,{injector:this.injector});
+    customElements.define('availability-new',customElement);
   }
 }
