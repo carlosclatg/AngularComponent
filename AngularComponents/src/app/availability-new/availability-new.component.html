@@ -1,4 +1,14 @@
 <p>availability-new works!</p>
+<ul *ngFor="let program of availAdd?.inventoryOfPrograms">
+    <li>{{program | json}}</li>
+    <ul *ngFor="let entryRoomType of availAdd?.mapRoomTypeDTOClientProgram">
+        <!-- <div *ngFor="let">
+            <li *ngIf="program.accomClientProgamId == ">{{entryRoomType | json}}</li>
+        </div> -->
+    </ul>
+</ul>
+
+
 <client-program-avail></client-program-avail>
 <dates-loader></dates-loader>
 <request-possible-table></request-possible-table>

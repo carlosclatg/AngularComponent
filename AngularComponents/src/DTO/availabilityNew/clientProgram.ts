@@ -10,7 +10,7 @@ export class ClientProgram{
 	 clientProgramName:string;
 	
 	//ClientProgramSharedGroup
-	 clientProgramSharedGroupId:string;
+	 clientProgramSharedGroupId:number;
 	 clientProgramSharedGroupName:string;
 	 clientProgramSharedGroupcode:string;
 }

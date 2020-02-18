@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { AvailabilityAdd } from 'src/DTO/availabilityNew/availabilityAdd';
+import { AvailabilityNewGet } from 'src/DTO/availabilityNew/availabilityNewGet';
+import { AvailabilityAddPostDTO } from 'src/DTO/availabilityNew/AvailabilityAddPostDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -32,8 +33,12 @@ export class ComunicationService {
   }
 
   //availabilityService
-  public getAvailByAccom() : Observable<AvailabilityAdd>{
-    return this.httpClient.post<any>(this.urlAvailInitialData,this.httpOptions);
+  public getAvailByAccom() : Observable<AvailabilityNewGet>{
+    return this.httpClient.post<any>(this.urlAvail,this.httpOptions);
+  }
+
+  public saveOrUpdateAvailabilitiesAdd(availabilityAddPostDTO:AvailabilityAddPostDTO):Observable<any>{
+    return this.httpClient.post<any>(this.urlPostAvail,availabilityAddPostDTO,this.httpOptions);
   }
 
   //tests
