@@ -19,6 +19,10 @@ import { AvailabilityNewComponent } from './availability-new/availability-new.co
 import { DatesLoaderComponent } from './availability-new/dates-loader/dates-loader.component';
 import { RequestPossibleTableComponent } from './availability-new/request-possible-table/request-possible-table.component';
 import { ClientProgramAvailComponent } from './availability-new/client-program-avail/client-program-avail.component';
+import { ModalComponent } from './availability-new/modal-avail/modal-avail.component';
+import { MaterialModule } from 'material.module';
+import { ModalService } from './services/modal.service';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -34,7 +38,8 @@ import { ClientProgramAvailComponent } from './availability-new/client-program-a
     AvailabilityNewComponent,
     DatesLoaderComponent,
     RequestPossibleTableComponent,
-    ClientProgramAvailComponent
+    ClientProgramAvailComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -42,14 +47,18 @@ import { ClientProgramAvailComponent } from './availability-new/client-program-a
     BrowserAnimationsModule,
     MatIconModule,
     MatTooltipModule,
-    HttpClientModule
+    HttpClientModule,
+    MaterialModule,
+    ReactiveFormsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: GlobalHttpInterceptorService, multi: true  },
-    CookieService 
+    CookieService,
+    ModalService
   ],
   entryComponents: [YourInformationComponent,
-  AvailabilityNewComponent]
+  AvailabilityNewComponent,
+ModalComponent]
 })
 export class AppModule { 
   constructor(private injector: Injector){}

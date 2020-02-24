@@ -1,13 +1,90 @@
-<p>availability-new works!</p>
-<ul *ngFor="let program of availAdd?.inventoryOfPrograms">
+<!-- <p>availability-new works!</p>
+ <ul *ngFor="let program of availAdd?.inventoryOfPrograms">
     <li>{{program | json}}</li>
     <ul *ngFor="let entryRoomType of availAdd?.mapRoomTypeDTOClientProgram">
-        <!-- <div *ngFor="let">
-            <li *ngIf="program.accomClientProgamId == ">{{entryRoomType | json}}</li>
-        </div> -->
+           <li *ngIf="program.accomClientProgamId == ">{{entryRoomType | json}}</li> 
+            {{entryRoomType | json}}
     </ul>
-</ul>
+</ul>  -->
+ <!-- Trigger/Open The Modal -->
+ <!-- <div>
+    <h1>Home</h1>
+    <p>{{bodyText}}</p>
+    <button (click)="openModal('custom-modal-1')">Open Modal 1</button>
+    <button (click)="openModal('custom-modal-2')">Open Modal 2</button>
+</div>
 
+<jw-modal id="custom-modal-1">
+    <h1>A Custom Modal!</h1>
+    <p>Home page text: <input type="text" [(ngModel)]="bodyText" /></p>
+    <button (click)="closeModal('custom-modal-1');">Close</button>
+</jw-modal>
+
+<jw-modal id="custom-modal-2">
+    <h1 style="height:1000px">A Tall Custom Modal!</h1>
+    <button (click)="closeModal('custom-modal-2');">Close</button>
+</jw-modal> -->
+<button (click)="showDialog()">Open Dialog</button>
+<modal id="modal_1" class="hhidden" [style.display]="opened? 'block' : 'none'">
+    <button (click)="closeDialog()">Cancel</button>
+    <p>lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+        lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+        lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+        lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+        lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+        lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+        lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+        lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+        lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+        lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+        lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+        lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+        lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+        lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+        lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+        lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+        lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+        lorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsumlorem ipsum lorem ipsum
+    </p>
+    <form [formGroup]="modalForm" (ngSubmit)="onSubmit()">
+        <label>
+            First Name:
+            <input type="text" formControlName="nom">
+        </label>        
+        <label>
+        Last Name:
+        <input type="text" formControlName="cognoms">
+        </label>
+        <h3>Periods</h3> 
+        <div *ngFor="let periodFrom of periodsFrom.controls; let i=index">
+                <!-- The repeated alias template -->
+            <label>
+                From:
+                <input type="date" [formControl]="periodsFrom.controls[i]">
+            </label>
+            <label>
+                To:
+                <input type="date" [formControl]="periodsTo.controls[i]">
+            </label>
+            <button type="button" (click)="deletePeriod(i)">-</button>
+        </div>
+        <button type="submit" [disabled]="!modalForm.valid">Submit</button>
+    </form>
+    <button (click)="addPeriod()">Add Period</button>
+    <p>{{ modalForm.status }} | {{this.modalForm.value | json}}</p>
+</modal>
+
+ <!-- The Modal -->
+ <!-- <div id="myModal" class="modal">
+ 
+    Modal content 
+   <div class="modal-content">
+     <span class="close">&times;</span>
+     <p>Some text in the Modal..</p>
+   </div>
+ 
+ </div>  -->
+  
 
 <client-program-avail></client-program-avail>
 <dates-loader></dates-loader>
