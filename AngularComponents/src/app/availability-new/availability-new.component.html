@@ -1,12 +1,12 @@
-<!-- <p>availability-new works!</p>
- <ul *ngFor="let program of availAdd?.inventoryOfPrograms">
+ <!-- <ul *ngFor="let program of availAdd?.inventoryOfPrograms">
     <li>{{program | json}}</li>
-    <ul *ngFor="let entryRoomType of availAdd?.mapRoomTypeDTOClientProgram">
-           <li *ngIf="program.accomClientProgamId == ">{{entryRoomType | json}}</li> 
-            {{entryRoomType | json}}
+    <ul *ngFor="let entryRoomType of availAdd?.mapRoomTypeDTOClientProgram"> -->
+           <!-- <li *ngIf="program.accomClientProgamId == ">{{entryRoomType | json}}</li>  -->
+            <!-- {{entryRoomType | json}}
     </ul>
 </ul>  -->
-<button (click)="showDialog()">Open Dialog</button>
+<div class="container-fluid">
+<button class="btn btn-secondary" (click)="showDialog()">Open Dialog</button>
 <modal id="modal_1" class="hhidden" [style.display]="opened? 'block' : 'none'">
     <div class="closeModal">
         <span (click)="closeDialog()">X</span>
@@ -34,12 +34,12 @@
                         To:
                         <input type="date" [formControl]="periodsTo.controls[i]">
                     </label>
-                    <button type="button" (click)="deletePeriod(i)">-</button>
+                    <button *ngIf="i!=0" class="btn btn-primary btn-sm" type="button" (click)="deletePeriod(i)">-</button>
                 </div>
             </form>
-            <div class="addPeriodButton"><button type ="button" id="addPeriod" (click)="addPeriod()">Add Period</button></div>
-            <div class="nextStep">
-                <button type="button" id="toAvailType" (click)="changeModalStep('showAvailType')">Next</button> 
+            <div class="addPeriodButton"><button type ="button" class="btn btn-secondary btn-sm" id="addPeriod" (click)="addPeriod()">Add Period</button></div>
+            <div class=" row nextStep">
+               <div class="col-md-1"><button class="btn btn-secondary btn-sm" type="button" id="toAvailType" (click)="changeModalStep('showAvailType')">Next</button></div>
             </div>
         </span>
 
@@ -54,40 +54,69 @@
                     </select>
                 </label>
             </form>
-            <div class="nextStep">
-                <button type="button" (click)="changeModalStep('showPeriods')">Back</button>
-                <button type="button" id="toCreateAvail" (click)="changeModalStep('showCreateAvail')">Next</button>
+            <div class="row nextStep">
+                <div class="col-md-1"><button class="btn btn-secondary btn-sm" type="button" (click)="changeModalStep('showPeriods')">Back</button></div>
+                <div class="col-md-1"><button class="btn btn-secondary btn-sm" type="button" id="toCreateAvail" (click)="changeModalStep('showCreateAvail')">Next</button></div>
             </div>
         </span>
 
         <span id="createAvailStep" [style.display]="showCreateAvail? 'block' : 'none'">       
             <form [formGroup]="createAvailForm" (ngSubmit)="onSubmit()">
                 <h3>Create (3/3)</h3>
-                <button type="submit" [disabled]="!createAvailForm.valid">Submit</button>
+                <div id="createAvailInputs" class="row">
+                    <div class="col-md-5">
+                        <div class="row">
+                            <select (change)="activatedistributionTypeSelect()" formControlName="roomType">
+                                <option value="" default>Room Type</option>
+                                <!-- <span *ngFor="let room of roomType"> -->
+                                    <option *ngFor="let room of roomType" value="{{room.id}}">{{room.label}}</option>
+                                <!-- </span> -->
+                            </select>
+                            <select class="distTypeSelect" formControlName="distributionType" [disabled]="!activateDistributionSelect">
+                                <option value="" default>Distribution Type</option>
+                                <option *ngFor="let program of distributionType" value="{{program.clientProgramId}}">
+                                    <span *ngIf="program.programType == 'private'">{{program.clientProgramName}}</span>
+                                    <span *ngIf="program.programType == 'shared'">{{program.clientProgramSharedGroupName}}</span>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-1">Mo<input type="checkbox" class="check"  value="monday" formControlName="weekDaysMo"></div>
+                            <div class="col-md-1">Tu<input type="checkbox" class="check"  value="tuesday" formControlName="weekDaysTu"></div>
+                            <div class="col-md-1">We<input type="checkbox" class="check"  value="wednesday" formControlName="weekDaysWe"></div>
+                            <div class="col-md-1">Th<input type="checkbox" class="check"  value="thursday" formControlName="weekDaysTh"></div>
+                            <div class="col-md-1">Fr<input type="checkbox" class="check"  value="friday" formControlName="weekDaysFr"></div>
+                            <div class="col-md-1">Sa<input type="checkbox" class="check"  value="saturday" formControlName="weekDaysSa"></div>
+                            <div class="col-md-1">Su<input type="checkbox" class="check"  value="sunday" formControlName="weekDaysSu"></div>
+                            <div class="col-md-2">All<input type="checkbox" class="check"  value="sunday" formControlName="all"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-1">D-<input type="text" class="check" formControlName="dayFrom"></div>
+                            <div class="col-md-1">D+<input type="text" class="check"  value="tuesday" formControlName="dayTo"></div>
+                            <div class="col-md-2">MinStay<input type="text" class="check"  value="wednesday" formControlName="stayMin"></div>
+                            <div class="col-md-2">MaxStay<input type="text" class="check"  value="thursday" formControlName="stayMax"></div>
+                            <!-- <div class="col-md-1">Fr<input type="checkbox" class="check"  value="friday" formControlName="weekDaysFr"></div>
+                            <div class="col-md-1">Sa<input type="checkbox" class="check"  value="saturday" formControlName="weekDaysSa"></div>
+                            <div class="col-md-1">Su<input type="checkbox" class="check"  value="sunday" formControlName="weekDaysSu"></div>
+                            <div class="col-md-1">Su<input type="checkbox" class="check"  value="sunday" formControlName="weekDaysSu"></div> -->
+                        </div>
+
+                    </div>
+                </div>
+                <button class="btn btn-secondary btn-sm" type="submit" [disabled]="!createAvailForm.valid">Submit</button>
             </form>
-            <div class="nextStep">
-                <button type="button" (click)="changeModalStep('showAvailType')">Back</button>
+            <div class="row nextStep">
+                <div class="col-md-1"><button type="button" class="button btn btn-secondary btn-sm" (click)="changeModalStep('showAvailType')">Back</button></div>
             </div>
         </span>
 
         
-    <!-- </form> -->
+
     
-    <p>{{ periodsForm.status }} | {{this.periodsForm.value | json}}</p>
+    <!-- <p>{{ periodsForm.status }} | {{this.periodsForm.value | json}}</p> -->
 </modal>
-
- <!-- The Modal -->
- <!-- <div id="myModal" class="modal">
- 
-    Modal content 
-   <div class="modal-content">
-     <span class="close">&times;</span>
-     <p>Some text in the Modal..</p>
-   </div>
- 
- </div>  -->
-  
-
-<client-program-avail></client-program-avail>
-<dates-loader></dates-loader>
-<request-possible-table></request-possible-table>
+</div>
