@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
  <!-- <ul *ngFor="let program of availAdd?.inventoryOfPrograms">
     <li>{{program | json}}</li>
     <ul *ngFor="let entryRoomType of availAdd?.mapRoomTypeDTOClientProgram"> -->
@@ -20,49 +21,74 @@
         Last Name:
         <input type="text" formControlName="cognoms">
         </label> -->
-
+        <p class="typoTitleSteps">Create new avail</p>
         <span id="periodsStep" [style.display]="showPeriods? 'block' : 'none'">
-            <h3>Periods (1/3)</h3>
+            <span class="stepDescription">Set dates of new period(s) (1/3)</span>
             <form [formGroup]="periodsForm">
-                <div *ngFor="let periodFrom of periodsFrom.controls; let i=index">
+                <div *ngFor="let periodFrom of periodsFrom.controls; let i=index" class="row">
                         <!-- The repeated alias template -->
-                    <label>
-                        From:
-                        <input type="date" [formControl]="periodsFrom.controls[i]">
-                    </label>
-                    <label>
-                        To:
-                        <input type="date" [formControl]="periodsTo.controls[i]">
-                    </label>
-                    <button *ngIf="i!=0" class="btn btn-primary btn-sm" type="button" (click)="deletePeriod(i)">-</button>
+
+                    <div class="col-md-2">
+                        <input type="date" class="datepicker" [formControl]="periodsFrom.controls[i]">
+                    </div>
+                    <div class="col-md-1 to">To</div>
+                    <div class="col-md-2">
+                        <input type="date" class="datepicker" [formControl]="periodsTo.controls[i]">
+                    </div>
+                    <div class="col-md-1 lessButton">
+                        <button *ngIf="i!=0" class="btn btn-primary btn-sm" type="button" (click)="deletePeriod(i)">-</button>
+                    </div>
                 </div>
             </form>
-            <div class="addPeriodButton"><button type ="button" class="btn btn-secondary btn-sm" id="addPeriod" (click)="addPeriod()">Add Period</button></div>
-            <div class=" row nextStep">
-               <div class="col-md-1"><button class="btn btn-secondary btn-sm" type="button" id="toAvailType" (click)="changeModalStep('showAvailType')">Next</button></div>
+            <div class="addPeriodButton"><span id="addPeriod" (click)="addPeriod()">&oplus; Add an additional Period</span></div>
+            <div class="row nextStep">
+               <div class="col-md-1"><button class="btn btn-secondary btn-sm" type="button" id="toAvailType" (click)="changeModalStep('showAvailType',false)">Next</button></div>
             </div>
         </span>
 
         <span id="availTypeStep" [style.display]="showAvailType? 'block' : 'none'">
-            <h3>Availability Type (2/3)</h3>
+            <span class="stepDescription">Choose Type (2/3)</span>
             <form [formGroup]="availTypeForm">
-                <label>
+                <!-- <label>
                     Availability type:
                     <select formControlName="availType">
                         <option value="global">Global</option>
                         <option value="room">By RoomType</option>
                     </select>
-                </label>
+                </label> -->
+                <div class="row">
+                        <!-- <i class="fas fa-bed"></i> -->
+                    <div (click)="setAvailType('room')" class="col-md-2 radioAvailType" [style.background-color]="availIsRoom? '#298da7' : 'white'">
+                        <!-- <img src="assets/images/fontAwesomeBedIcon.png"> -->
+                        <span>Room Type</span><br>availability
+                    </div>
+                    <div (click)="setAvailType('global')" class="col-md-2 radioAvailType" [style.background-color]="availIsGlobal? '#298da7' : 'white'">
+                        <!-- <i class="bed"></i> -->
+                        <span>Global</span><br> Availability
+                    </div>
+                </div>
             </form>
             <div class="row nextStep">
-                <div class="col-md-1"><button class="btn btn-secondary btn-sm" type="button" (click)="changeModalStep('showPeriods')">Back</button></div>
-                <div class="col-md-1"><button class="btn btn-secondary btn-sm" type="button" id="toCreateAvail" (click)="changeModalStep('showCreateAvail')">Next</button></div>
+                <div class="col-md-1"><button class="btn btn-secondary btn-sm" type="button" (click)="changeModalStep('showPeriods',false)">Back</button></div>
+                <div class="col-md-1"><button class="btn btn-secondary btn-sm" type="button" id="toCreateAvail" (click)="changeModalStep('showCreateAvail',false)">Next</button></div>
+            </div>
+        </span>
+
+        <span id="chooseRoomsStep" [style.display]="showChooseRoomStep? 'block' : 'none'">
+            <div class="row">
+                <div *ngFor="let room of this.roomType" class="col-md-2 radioRoomType">
+                    <span>{{room.label}}</span>
+                </div>
+            </div>
+            <div class="row nextStep">
+                <div class="col-md-1"><button class="btn btn-secondary btn-sm" type="button" (click)="changeModalStep('showAvailType',true)">Back</button></div>
+                <div class="col-md-1"><button class="btn btn-secondary btn-sm" type="button" id="toCreateAvail" (click)="changeModalStep('showCreateAvail',true)">Next</button></div>
             </div>
         </span>
 
         <span id="createAvailStep" [style.display]="showCreateAvail? 'block' : 'none'">       
             <form [formGroup]="createAvailForm" (ngSubmit)="onSubmit()">
-                <h3>Create (3/3)</h3>
+                <span class="stepDescription">Create (3/3)</span>
                 <div id="createAvailInputs" class="row">
                     <div class="col-md-5">
                         <div class="row">
@@ -110,7 +136,7 @@
                 <button class="btn btn-secondary btn-sm" type="submit" [disabled]="!createAvailForm.valid">Submit</button>
             </form>
             <div class="row nextStep">
-                <div class="col-md-1"><button type="button" class="button btn btn-secondary btn-sm" (click)="changeModalStep('showAvailType')">Back</button></div>
+                <div class="col-md-1"><button type="button" class="button btn btn-secondary btn-sm" (click)="changeModalStep('showAvailType',false)">Back</button></div>
             </div>
         </span>
 

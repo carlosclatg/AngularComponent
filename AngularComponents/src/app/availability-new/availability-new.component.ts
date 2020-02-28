@@ -28,6 +28,9 @@ export class AvailabilityNewComponent implements OnInit {
   showPeriods:boolean = false;
   showAvailType:boolean = false;
   showCreateAvail:boolean = false;
+  showChooseRoomStep:boolean = false;
+  availIsRoom:boolean = false;
+  availIsGlobal:boolean = false;
   //Form management
   periodsFrom:FormArray =  new FormArray([]);
   periodsTo:FormArray =  new FormArray([]);
@@ -123,23 +126,33 @@ export class AvailabilityNewComponent implements OnInit {
   }
   
 
-  changeModalStep(step:string){
+  changeModalStep(step:string,insideroomTypeStep:boolean){
     console.warn("inside changeModalStep")
     console.warn(step);
     if(step == "showPeriods"){
         this.showPeriods = true;
         this.showAvailType = false;
         this.showCreateAvail = false;
+        this.showChooseRoomStep = false;
         //console.warn('showPeriods')
     }else if(step == "showAvailType"){
         this.showPeriods = false;
         this.showAvailType = true;
         this.showCreateAvail = false;
+        this.showChooseRoomStep = false;
         //console.warn('showAvailType')
     }else if(step == "showCreateAvail"){
+      if(this.availTypeForm.controls.availType.value == "room" && insideroomTypeStep == false){
+        this.showChooseRoomStep = true;
+        this.showPeriods = false;
+        this.showAvailType = false;
+        this.showCreateAvail = false;
+      }else{
+        this.showChooseRoomStep = false;
         this.showPeriods = false;
         this.showAvailType = false;
         this.showCreateAvail = true;
+      }
         //console.warn('showCreateAvail')
     }
   }
@@ -166,6 +179,19 @@ export class AvailabilityNewComponent implements OnInit {
       this.activateDistributionSelect = true;
     }else{
       this.activateDistributionSelect = false;
+    }
+  }
+
+  setAvailType(type:string){
+    this.availTypeForm.controls.availType.setValue(type);
+    console.debug(this.availTypeForm.controls.availType.value);
+    if(type == "global"){
+      this.availIsGlobal = true;
+      this.availIsRoom = false;
+    }else{
+      this.availIsRoom = true;
+      this.availIsGlobal = false;
+      
     }
   }
 }
