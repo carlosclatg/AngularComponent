@@ -89,10 +89,10 @@
         <span id="createAvailStep" [style.display]="showCreateAvail? 'block' : 'none'">       
             <form [formGroup]="createAvailForm" (ngSubmit)="onSubmit()">
                 <span class="stepDescription">Create (3/3)</span>
-                <span *ngIf="availTypeForm.controls.availType.value == 'room'" class="roomTypeCreate">
-                    <div *ngFor="let roomTypeClientProgram of roomTypeClientProgramsSelected" class="row">
-                        <div class="col-md-12">
-                            <span>{{roomTypeClientProgram.roomType.label}}</span>
+                <!-- <span *ngIf="availTypeForm.controls.availType.value == 'room'" class="roomTypeCreate"> -->
+                    <div *ngFor="let distribution of distributionTypeFormArray.controls; let i=index" class="row">
+                        <div *ngIf="availTypeForm.controls.availType.value == 'room' && roomTypeClientProgramsSelected != undefined" class="col-md-12">
+                            <span>{{roomTypeClientProgramsSelected[i].roomType.label}}</span>
                         </div>
                         <div class="col-md-5 createAvailSelects">
                             <div class="row">
@@ -100,32 +100,49 @@
                                     <option value="" default>Room Type</option>
                                     <option *ngFor="let room of roomType" value="{{room.id}}">{{room.label}}</option>
                                 </select> -->
-                                <select class="distTypeSelect" formControlName="distributionType">
-                                    <option value="" default>Distribution Type</option>
-                                    <option *ngFor="let program of roomTypeClientProgram.clientPrograms" value="{{program.clientProgramId}}">
-                                        <span *ngIf="program.programType == 'private'">{{program.clientProgramName}}</span>
-                                        <span *ngIf="program.programType == 'shared'">{{program.clientProgramSharedGroupName}}</span>
-                                    </option>
-                                </select>
-                                <select class="availModeSelect" formControlName="availMode">
-                                    <option value="freeSale"><span>F </span> <span *ngIf="createAvailForm.controls.availMode.value != 'freeSale'">Free Sale</span></option>
-                                    <option value=""><span>999 </span><span>Stock</span></option>
-                                    <option value=""><span>FLEX 999</span> <span>Flexible</span></option>
-                                    <option value=""><span>CONT 999</span> <span>Contracted</span></option>
-                                    <option value=""><span>RQ</span><span>Request</span></option>
-                                </select>
+                                <div *ngIf="availIsRoom" class="col-md-4">
+                                    <select class="distTypeSelect" [formControl]="distributionTypeFormArray.controls[i]">
+                                        <option value="" default>Distribution Type</option>
+                                        <option *ngFor="let program of roomTypeClientProgramsSelected[i].clientPrograms" value="{{program.clientProgramId}}">
+                                            <span *ngIf="program.programType == 'private'">{{program.clientProgramName}}</span>
+                                            <span *ngIf="program.programType == 'shared'">{{program.clientProgramSharedGroupName}}</span>
+                                        </option>
+                                    </select>
+                                </div>
+                                <div *ngIf="availIsGlobal" class="col-md-4">
+                                    <select class="distTypeSelect" [formControl]="distributionTypeFormArray.controls[i]">
+                                        <option value="" default>Distribution Type</option>
+                                        <option *ngFor="let program of availAdd.inventoryOfPrograms" value="{{program.clientProgramId}}">
+                                            <span *ngIf="program.programType == 'private'">{{program.clientProgramName}}</span>
+                                            <span *ngIf="program.programType == 'shared'">{{program.clientProgramSharedGroupName}}</span>
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 divAvailModeAndStockSelect">
+                                    <span>Type</span>
+                                    <select class="availModeSelect" [formControl]="availModeFormArray.controls[i]">
+                                        <option value="freeSale" default><span>F </span> <span *ngIf="availModeFormArray.controls[i].value != 'freeSale'">Free Sale</span></option>
+                                        <option value="stock"><span>999 </span><span *ngIf="availModeFormArray.controls[i].value != 'stock'">Stock</span></option>
+                                        <option value="flex"><span>FLEX 999 </span> <span *ngIf="availModeFormArray.controls[i].value != 'flex'">Flexible</span></option>
+                                        <option value="contracted"><span>CONT 999 </span> <span *ngIf="availModeFormArray.controls[i].value != 'contracted'">Contracted</span></option>
+                                        <option value="request"><span>RQ </span><span *ngIf="availModeFormArray.controls[i].value != 'request'">Request</span></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 divAvailModeAndStockSelect">
+                                    Stock<input type="text" class="stockInput" [formControl]="stockFormArray.controls[i]">
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="row">
-                                <div class="col-md-1">Mo<input type="checkbox" class="check"  value="monday" formControlName="weekDaysMo"></div>
-                                <div class="col-md-1">Tu<input type="checkbox" class="check"  value="tuesday" formControlName="weekDaysTu"></div>
-                                <div class="col-md-1">We<input type="checkbox" class="check"  value="wednesday" formControlName="weekDaysWe"></div>
-                                <div class="col-md-1">Th<input type="checkbox" class="check"  value="thursday" formControlName="weekDaysTh"></div>
-                                <div class="col-md-1">Fr<input type="checkbox" class="check"  value="friday" formControlName="weekDaysFr"></div>
-                                <div class="col-md-1">Sa<input type="checkbox" class="check"  value="saturday" formControlName="weekDaysSa"></div>
-                                <div class="col-md-1">Su<input type="checkbox" class="check"  value="sunday" formControlName="weekDaysSu"></div>
-                                <div class="col-md-2">All<input type="checkbox" class="check"  value="sunday" formControlName="all"></div>
+                                <div class="col-md-1">Mo<input type="checkbox" class="check"  value="monday" [formControl]="weekDaysMoFormArray.controls[i]"></div>
+                                <div class="col-md-1">Tu<input type="checkbox" class="check"  value="tuesday" [formControl]="weekDaysTuFormArray.controls[i]"></div>
+                                <div class="col-md-1">We<input type="checkbox" class="check"  value="wednesday" [formControl]="weekDaysWeFormArray.controls[i]"></div>
+                                <div class="col-md-1">Th<input type="checkbox" class="check"  value="thursday" [formControl]="weekDaysThFormArray.controls[i]"></div>
+                                <div class="col-md-1">Fr<input type="checkbox" class="check"  value="friday" [formControl]="weekDaysFrFormArray.controls[i]"></div>
+                                <div class="col-md-1">Sa<input type="checkbox" class="check"  value="saturday" [formControl]="weekDaysSaFormArray.controls[i]"></div>
+                                <div class="col-md-1">Su<input type="checkbox" class="check"  value="sunday" [formControl]="weekDaysSuFormArray.controls[i]"></div>
+                                <div class="col-md-2">All<input type="checkbox" class="check"  value="sunday" [formControl]="allFormArray.controls[i]"></div>
                             </div>
                         </div>
                         <div class="col-md-4 constraintsArea">
@@ -137,20 +154,20 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-1 fromToLegend">From</div>
-                                <div class="col-md-1">Day<input type="text" class="check" formControlName="dayFrom"></div>
-                                <div class="col-md-1">Hour<input type="text" class="check" formControlName="hourFrom"></div>
+                                <div class="col-md-1">Day<input type="text" class="check" [formControl]="dayFromFormArray.controls[i]"></div>
+                                <div class="col-md-1">Hour<input type="text" class="check" [formControl]="hourFromFormArray.controls[i]"></div>
                                 <div class="col-md-1 fromToLegend">To</div>
-                                <div class="col-md-1">Day<input type="text" class="check" formControlName="dayTo"></div>
-                                <div class="col-md-1">Hour<input type="text" class="check" formControlName="hourTo"></div>
-                                <div class="col-md-2 minStay">Min<br><input type="text" class="check"  value="wednesday" formControlName="stayMin"></div>
-                                <div class="col-md-2">Max<input type="text" class="check"  value="thursday" formControlName="stayMax"></div>
+                                <div class="col-md-1">Day<input type="text" class="check" [formControl]="dayToFormArray.controls[i]"></div>
+                                <div class="col-md-1">Hour<input type="text" class="check" [formControl]="hourToFormArray.controls[i]"></div>
+                                <div class="col-md-2 minStay">Min<br><input type="text" class="check"  value="wednesday" [formControl]="stayMinFormArray.controls[i]"></div>
+                                <div class="col-md-2">Max<input type="text" class="check"  value="thursday" [formControl]="stayMaxFormArray.controls[i]"></div>
                             </div>
                         </div>
                     </div>
-                </span>
-                <span *ngIf="availTypeForm.controls.availType.value == 'global'">
+                <!-- </span> -->
+                <!-- <span *ngIf="availTypeForm.controls.availType.value == 'global'">
 
-                </span>
+                </span> -->
                 <div class="row">
                     <button class="btn btn-secondary btn-sm" type="submit" [disabled]="!createAvailForm.valid">Submit</button>
                 </div>

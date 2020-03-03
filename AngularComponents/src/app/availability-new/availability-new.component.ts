@@ -33,8 +33,30 @@ export class AvailabilityNewComponent implements OnInit {
   availIsRoom:boolean = false;
   availIsGlobal:boolean = false;
   //Form management
+  //form array for periods form
   periodsFrom:FormArray =  new FormArray([]);
   periodsTo:FormArray =  new FormArray([]);
+  //formarrays for create avail form
+  distributionTypeFormArray:FormArray = new FormArray([]);
+  availModeFormArray:FormArray = new FormArray([]);
+  stockFormArray:FormArray = new FormArray([]);
+  weekDaysMoFormArray:FormArray = new FormArray([]);
+  weekDaysTuFormArray:FormArray = new FormArray([]);
+  weekDaysWeFormArray:FormArray = new FormArray([]);
+  weekDaysThFormArray:FormArray = new FormArray([]);
+  weekDaysFrFormArray:FormArray = new FormArray([]);
+  weekDaysSaFormArray:FormArray = new FormArray([]);
+  weekDaysSuFormArray:FormArray = new FormArray([]);
+  allFormArray:FormArray = new FormArray([]);
+  dayFromFormArray:FormArray = new FormArray([]);
+  hourFromFormArray:FormArray = new FormArray([]);
+  minuteFromFormArray:FormArray = new FormArray([]);
+  dayToFormArray:FormArray = new FormArray([]);
+  hourToFormArray:FormArray = new FormArray([]);
+  minuteToFormArray:FormArray = new FormArray([]);
+  stayMinFormArray:FormArray = new FormArray([]);
+  stayMaxFormArray:FormArray = new FormArray([]);
+  //
   roomType:Array<any> = new Array();
   roomsSelected:Array<any> = new Array();
   programsByRoomsSelected:Array<ClientProgram> = new Array();
@@ -48,32 +70,35 @@ export class AvailabilityNewComponent implements OnInit {
     periodsFrom: this.periodsFrom,
     periodsTo: this.periodsTo
   });
-  //Form step 3 create avail
-  createAvailForm = this.fb.group({
-    roomType: ['',Validators.required],
-    distributionType: new FormControl({value:'',disabled: this.activateDistributionSelect},Validators.required),
-    availMode: new FormControl(''),
-    weekDaysMo:new FormControl(''),
-    weekDaysTu:new FormControl(''),
-    weekDaysWe:new FormControl(''),
-    weekDaysTh:new FormControl(''),
-    weekDaysFr:new FormControl(''),
-    weekDaysSa:new FormControl(''),
-    weekDaysSu:new FormControl(''),
-    all:new FormControl(''),
-    dayFrom:new FormControl(''),
-    hourFrom:new FormControl(''),
-    minuteFrom:new FormControl(''),
-    dayTo:new FormControl(''),
-    hourTo:new FormControl(''),
-    minuteTo:new FormControl(''),
-    stayMin:new FormControl(''),
-    stayMax:new FormControl(''),
-  });
   //Form step 2 avail type
   availTypeForm = this.fb.group({
     availType: ['',Validators.required]
   });
+  //Form step 3 create avail
+  createAvailForm = this.fb.group({
+    //roomType: ['',Validators.required],
+    //distributionType: new FormControl({value:'',disabled: this.activateDistributionSelect},Validators.required),
+    distributionType: this.distributionTypeFormArray,
+    availMode: this.availModeFormArray,
+    stock: this.stockFormArray,
+    weekDaysMo:this.weekDaysMoFormArray,
+    weekDaysTu:this.weekDaysTuFormArray,
+    weekDaysWe:this.weekDaysWeFormArray,
+    weekDaysTh:this.weekDaysThFormArray,
+    weekDaysFr:this.weekDaysFrFormArray,
+    weekDaysSa:this.weekDaysSaFormArray,
+    weekDaysSu:this.weekDaysSuFormArray,
+    all:this.allFormArray,
+    dayFrom:this.dayFromFormArray,
+    hourFrom:this.hourFromFormArray,
+    minuteFrom:this.minuteFromFormArray,
+    dayTo:this.dayToFormArray,
+    hourTo:this.hourToFormArray,
+    minuteTo:this.minuteToFormArray,
+    stayMin:this.stayMinFormArray,
+    stayMax:this.stayMaxFormArray,
+  });
+
   //constructor
   constructor(private availService:AvailabilityService,public dialog: MatDialog,private modalService: ModalService,
     private el: ElementRef, private fb: FormBuilder) { }
@@ -105,8 +130,8 @@ export class AvailabilityNewComponent implements OnInit {
     //let periods = <FormArray>this.modalForm.controls.periods;
     this.periodsFrom.push(this.fb.control('',Validators.required));
     this.periodsTo.push(this.fb.control('',Validators.required));
-    console.debug("periodsFrom length: "+this.periodsFrom.length);
-    console.debug("periodsTo length: "+this.periodsTo.length);
+    //console.debug("periodsFrom length: "+this.periodsFrom.length);
+    //console.debug("periodsTo length: "+this.periodsTo.length);
   }
 
   deletePeriod(index){
@@ -156,13 +181,83 @@ export class AvailabilityNewComponent implements OnInit {
         this.showPeriods = false;
         this.showAvailType = false;
         this.showCreateAvail = false;
+      }else if(this.availTypeForm.controls.availType.value == "room" && insideroomTypeStep == true){
+        this.showChooseRoomStep = false;
+        this.showPeriods = false;
+        this.showAvailType = false;
+        this.showCreateAvail = true;
+        this.createFormControlsForProgramsByRoom('room');
       }else{
         this.showChooseRoomStep = false;
         this.showPeriods = false;
         this.showAvailType = false;
         this.showCreateAvail = true;
+        this.createFormControlsForProgramsByRoom('global');
       }
         //console.warn('showCreateAvail')
+    }
+  }
+
+  createFormControlsForProgramsByRoom(type:string){
+    this.distributionTypeFormArray = new FormArray([]);
+    this.availModeFormArray = new FormArray([]);
+    this.weekDaysMoFormArray = new FormArray([]);
+    this.weekDaysTuFormArray = new FormArray([]);
+    this.weekDaysWeFormArray = new FormArray([]);
+    this.weekDaysThFormArray = new FormArray([]);
+    this.weekDaysFrFormArray = new FormArray([]);
+    this.weekDaysSaFormArray = new FormArray([]);
+    this.weekDaysSuFormArray = new FormArray([]);
+    this.allFormArray = new FormArray([]);
+    this.dayFromFormArray = new FormArray([]);
+    this.hourFromFormArray = new FormArray([]);
+    this.minuteFromFormArray = new FormArray([]);
+    this.dayToFormArray = new FormArray([]);
+    this.hourToFormArray = new FormArray([]);
+    this.minuteToFormArray = new FormArray([]);
+    this.stayMinFormArray = new FormArray([]);
+    this.stayMaxFormArray = new FormArray([]);
+    if(type == "room"){ 
+      for (let index = 0; index < this.roomTypeClientProgramsSelected.length; index++) {
+        this.distributionTypeFormArray.push(new FormControl({value:'',disabled: this.activateDistributionSelect},Validators.required));
+        this.availModeFormArray.push(new FormControl(''));
+        this.weekDaysMoFormArray.push(new FormControl(''));
+        this.weekDaysTuFormArray.push(new FormControl('')); 
+        this.weekDaysWeFormArray.push(new FormControl(''));
+        this.weekDaysThFormArray.push(new FormControl(''));
+        this.weekDaysFrFormArray.push(new FormControl(''));
+        this.weekDaysSaFormArray.push(new FormControl(''));
+        this.weekDaysSuFormArray.push(new FormControl(''));
+        this.allFormArray.push(new FormControl(''));
+        this.dayFromFormArray.push(new FormControl(''));
+        this.hourFromFormArray.push(new FormControl(''));
+        this.minuteFromFormArray.push(new FormControl(''));
+        this.dayToFormArray.push(new FormControl(''));
+        this.hourToFormArray.push(new FormControl(''));
+        this.minuteToFormArray.push(new FormControl(''));
+        this.stayMinFormArray.push(new FormControl(''));
+        this.stayMaxFormArray.push(new FormControl(''));
+        
+      }
+    }else{
+      this.distributionTypeFormArray.push(new FormControl({value:'',disabled: this.activateDistributionSelect},Validators.required));
+      this.availModeFormArray.push(new FormControl(''));
+      this.weekDaysMoFormArray.push(new FormControl(''));
+      this.weekDaysTuFormArray.push(new FormControl('')); 
+      this.weekDaysWeFormArray.push(new FormControl(''));
+      this.weekDaysThFormArray.push(new FormControl(''));
+      this.weekDaysFrFormArray.push(new FormControl(''));
+      this.weekDaysSaFormArray.push(new FormControl(''));
+      this.weekDaysSuFormArray.push(new FormControl(''));
+      this.allFormArray.push(new FormControl(''));
+      this.dayFromFormArray.push(new FormControl(''));
+      this.hourFromFormArray.push(new FormControl(''));
+      this.minuteFromFormArray.push(new FormControl(''));
+      this.dayToFormArray.push(new FormControl(''));
+      this.hourToFormArray.push(new FormControl(''));
+      this.minuteToFormArray.push(new FormControl(''));
+      this.stayMinFormArray.push(new FormControl(''));
+      this.stayMaxFormArray.push(new FormControl(''));
     }
   }
 
@@ -230,15 +325,17 @@ export class AvailabilityNewComponent implements OnInit {
   }
 
   setAvailType(type:string){
-    this.availTypeForm.controls.availType.setValue(type);
-    console.debug(this.availTypeForm.controls.availType.value);
     if(type == "global"){
       this.availIsGlobal = true;
       this.availIsRoom = false;
     }else{
+      this.createFormControlsForProgramsByRoom("room");
       this.availIsRoom = true;
       this.availIsGlobal = false;
       
     }
+    this.availTypeForm.controls.availType.setValue(type);
+    //console.debug(this.availTypeForm.controls.availType.value);
+
   }
 }
