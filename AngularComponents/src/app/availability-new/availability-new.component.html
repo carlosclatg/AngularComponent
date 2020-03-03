@@ -76,8 +76,8 @@
 
         <span id="chooseRoomsStep" [style.display]="showChooseRoomStep? 'block' : 'none'">
             <div class="row">
-                <div *ngFor="let room of this.roomType" class="col-md-2 radioRoomType">
-                    <span>{{room.label}}</span>
+                <div *ngFor="let room of this.roomType" class="col-md-2 radioRoomType" [style.background-color]="this.roomsSelected.includes(room)? '#298da7' : 'white'">
+                    <span (click)="addRoomType(room.id)">{{room.label}}</span>
                 </div>
             </div>
             <div class="row nextStep">
@@ -89,51 +89,71 @@
         <span id="createAvailStep" [style.display]="showCreateAvail? 'block' : 'none'">       
             <form [formGroup]="createAvailForm" (ngSubmit)="onSubmit()">
                 <span class="stepDescription">Create (3/3)</span>
-                <div id="createAvailInputs" class="row">
-                    <div class="col-md-5">
-                        <div class="row">
-                            <select (change)="activatedistributionTypeSelect()" formControlName="roomType">
-                                <option value="" default>Room Type</option>
-                                <!-- <span *ngFor="let room of roomType"> -->
+                <span *ngIf="availTypeForm.controls.availType.value == 'room'" class="roomTypeCreate">
+                    <div *ngFor="let roomTypeClientProgram of roomTypeClientProgramsSelected" class="row">
+                        <div class="col-md-12">
+                            <span>{{roomTypeClientProgram.roomType.label}}</span>
+                        </div>
+                        <div class="col-md-5 createAvailSelects">
+                            <div class="row">
+                                <!-- <select (change)="activatedistributionTypeSelect()" formControlName="roomType">
+                                    <option value="" default>Room Type</option>
                                     <option *ngFor="let room of roomType" value="{{room.id}}">{{room.label}}</option>
-                                <!-- </span> -->
-                            </select>
-                            <select class="distTypeSelect" formControlName="distributionType" [disabled]="!activateDistributionSelect">
-                                <option value="" default>Distribution Type</option>
-                                <option *ngFor="let program of distributionType" value="{{program.clientProgramId}}">
-                                    <span *ngIf="program.programType == 'private'">{{program.clientProgramName}}</span>
-                                    <span *ngIf="program.programType == 'shared'">{{program.clientProgramSharedGroupName}}</span>
-                                </option>
-                            </select>
+                                </select> -->
+                                <select class="distTypeSelect" formControlName="distributionType">
+                                    <option value="" default>Distribution Type</option>
+                                    <option *ngFor="let program of roomTypeClientProgram.clientPrograms" value="{{program.clientProgramId}}">
+                                        <span *ngIf="program.programType == 'private'">{{program.clientProgramName}}</span>
+                                        <span *ngIf="program.programType == 'shared'">{{program.clientProgramSharedGroupName}}</span>
+                                    </option>
+                                </select>
+                                <select class="availModeSelect" formControlName="availMode">
+                                    <option value="freeSale"><span>F </span> <span *ngIf="createAvailForm.controls.availMode.value != 'freeSale'">Free Sale</span></option>
+                                    <option value=""><span>999 </span><span>Stock</span></option>
+                                    <option value=""><span>FLEX 999</span> <span>Flexible</span></option>
+                                    <option value=""><span>CONT 999</span> <span>Contracted</span></option>
+                                    <option value=""><span>RQ</span><span>Request</span></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="row">
+                                <div class="col-md-1">Mo<input type="checkbox" class="check"  value="monday" formControlName="weekDaysMo"></div>
+                                <div class="col-md-1">Tu<input type="checkbox" class="check"  value="tuesday" formControlName="weekDaysTu"></div>
+                                <div class="col-md-1">We<input type="checkbox" class="check"  value="wednesday" formControlName="weekDaysWe"></div>
+                                <div class="col-md-1">Th<input type="checkbox" class="check"  value="thursday" formControlName="weekDaysTh"></div>
+                                <div class="col-md-1">Fr<input type="checkbox" class="check"  value="friday" formControlName="weekDaysFr"></div>
+                                <div class="col-md-1">Sa<input type="checkbox" class="check"  value="saturday" formControlName="weekDaysSa"></div>
+                                <div class="col-md-1">Su<input type="checkbox" class="check"  value="sunday" formControlName="weekDaysSu"></div>
+                                <div class="col-md-2">All<input type="checkbox" class="check"  value="sunday" formControlName="all"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 constraintsArea">
+                            <div class="row">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-4">RELEASE DATE</div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-2">Stay</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1 fromToLegend">From</div>
+                                <div class="col-md-1">Day<input type="text" class="check" formControlName="dayFrom"></div>
+                                <div class="col-md-1">Hour<input type="text" class="check" formControlName="hourFrom"></div>
+                                <div class="col-md-1 fromToLegend">To</div>
+                                <div class="col-md-1">Day<input type="text" class="check" formControlName="dayTo"></div>
+                                <div class="col-md-1">Hour<input type="text" class="check" formControlName="hourTo"></div>
+                                <div class="col-md-2 minStay">Min<br><input type="text" class="check"  value="wednesday" formControlName="stayMin"></div>
+                                <div class="col-md-2">Max<input type="text" class="check"  value="thursday" formControlName="stayMax"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="row">
-                            <div class="col-md-1">Mo<input type="checkbox" class="check"  value="monday" formControlName="weekDaysMo"></div>
-                            <div class="col-md-1">Tu<input type="checkbox" class="check"  value="tuesday" formControlName="weekDaysTu"></div>
-                            <div class="col-md-1">We<input type="checkbox" class="check"  value="wednesday" formControlName="weekDaysWe"></div>
-                            <div class="col-md-1">Th<input type="checkbox" class="check"  value="thursday" formControlName="weekDaysTh"></div>
-                            <div class="col-md-1">Fr<input type="checkbox" class="check"  value="friday" formControlName="weekDaysFr"></div>
-                            <div class="col-md-1">Sa<input type="checkbox" class="check"  value="saturday" formControlName="weekDaysSa"></div>
-                            <div class="col-md-1">Su<input type="checkbox" class="check"  value="sunday" formControlName="weekDaysSu"></div>
-                            <div class="col-md-2">All<input type="checkbox" class="check"  value="sunday" formControlName="all"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="row">
-                            <div class="col-md-1">D-<input type="text" class="check" formControlName="dayFrom"></div>
-                            <div class="col-md-1">D+<input type="text" class="check"  value="tuesday" formControlName="dayTo"></div>
-                            <div class="col-md-2">MinStay<input type="text" class="check"  value="wednesday" formControlName="stayMin"></div>
-                            <div class="col-md-2">MaxStay<input type="text" class="check"  value="thursday" formControlName="stayMax"></div>
-                            <!-- <div class="col-md-1">Fr<input type="checkbox" class="check"  value="friday" formControlName="weekDaysFr"></div>
-                            <div class="col-md-1">Sa<input type="checkbox" class="check"  value="saturday" formControlName="weekDaysSa"></div>
-                            <div class="col-md-1">Su<input type="checkbox" class="check"  value="sunday" formControlName="weekDaysSu"></div>
-                            <div class="col-md-1">Su<input type="checkbox" class="check"  value="sunday" formControlName="weekDaysSu"></div> -->
-                        </div>
+                </span>
+                <span *ngIf="availTypeForm.controls.availType.value == 'global'">
 
-                    </div>
+                </span>
+                <div class="row">
+                    <button class="btn btn-secondary btn-sm" type="submit" [disabled]="!createAvailForm.valid">Submit</button>
                 </div>
-                <button class="btn btn-secondary btn-sm" type="submit" [disabled]="!createAvailForm.valid">Submit</button>
             </form>
             <div class="row nextStep">
                 <div class="col-md-1"><button type="button" class="button btn btn-secondary btn-sm" (click)="changeModalStep('showAvailType',false)">Back</button></div>

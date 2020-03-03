@@ -12,6 +12,7 @@ import { Months } from './months-enum';
 import { RoomType } from 'src/DTO/availabilityNew/roomType';
 import { ClientProgram } from 'src/DTO/availabilityNew/clientProgram';
 import { analyzeFileForInjectables } from '@angular/compiler';
+import { RoomTypeClientPrograms } from 'src/DTO/availabilityNew/roomTypeClientPrograms';
 
 @Component({
   selector: 'availability-new',
@@ -35,6 +36,9 @@ export class AvailabilityNewComponent implements OnInit {
   periodsFrom:FormArray =  new FormArray([]);
   periodsTo:FormArray =  new FormArray([]);
   roomType:Array<any> = new Array();
+  roomsSelected:Array<any> = new Array();
+  programsByRoomsSelected:Array<ClientProgram> = new Array();
+  roomTypeClientProgramsSelected:Array<RoomTypeClientPrograms> = new Array();
   distributionType:Array<ClientProgram> = new Array();
   activateDistributionSelect:boolean = false;
   //Form step 1 periods
@@ -48,6 +52,7 @@ export class AvailabilityNewComponent implements OnInit {
   createAvailForm = this.fb.group({
     roomType: ['',Validators.required],
     distributionType: new FormControl({value:'',disabled: this.activateDistributionSelect},Validators.required),
+    availMode: new FormControl(''),
     weekDaysMo:new FormControl(''),
     weekDaysTu:new FormControl(''),
     weekDaysWe:new FormControl(''),
@@ -57,7 +62,11 @@ export class AvailabilityNewComponent implements OnInit {
     weekDaysSu:new FormControl(''),
     all:new FormControl(''),
     dayFrom:new FormControl(''),
+    hourFrom:new FormControl(''),
+    minuteFrom:new FormControl(''),
     dayTo:new FormControl(''),
+    hourTo:new FormControl(''),
+    minuteTo:new FormControl(''),
     stayMin:new FormControl(''),
     stayMax:new FormControl(''),
   });
@@ -165,7 +174,7 @@ export class AvailabilityNewComponent implements OnInit {
       for(let entry of this.availAdd.mapRoomTypeDTOClientProgram.entries()){
         let mappingroomProgramIds:any = entry[1][0];
         //check the roomId selected in the mapping between rooms and programs       
-        if(mappingroomProgramIds.id == this.createAvailForm.controls['roomType'].value){;
+        if(mappingroomProgramIds.id == this.createAvailForm.controls['roomType'].value){
           let programIdList:any = entry[1][1];
           for(let id of programIdList){
             for(let clientProgram of this.availAdd.inventoryOfPrograms){
@@ -180,6 +189,44 @@ export class AvailabilityNewComponent implements OnInit {
     }else{
       this.activateDistributionSelect = false;
     }
+  }
+
+  addRoomType(roomId:any){
+    console.debug("roomId"+roomId);
+    let rTypeClPrg:RoomTypeClientPrograms;
+    let contains:boolean;
+    for(let key of this.availAdd.mapRoomTypeDTOClientProgram.entries()){
+      let roomType:any = key[1][0];
+      if(roomType.id == roomId){
+        //console.debug("contains Room: "+this.roomsSelected.includes(roomType));
+        rTypeClPrg = new RoomTypeClientPrograms;
+        rTypeClPrg.roomType = roomType;
+        let programIdList:any = key[1][1];
+        for(let id of programIdList){
+          for(let clientProgram of this.availAdd.inventoryOfPrograms){
+            if(id == clientProgram.clientProgramId){
+              //this.programsByRoomsSelected.push(clientProgram);
+              rTypeClPrg.clientPrograms.push(clientProgram);
+              }
+            }
+          }
+        if(!this.roomsSelected.includes(roomType)){
+          contains = false;
+          this.roomsSelected.push(roomType);
+          //console.debug("push if contains: "+JSON.stringify(this.roomsSelected));
+        }else{
+          contains = true;
+          this.roomsSelected.splice(this.roomsSelected.indexOf(roomType),1);
+          //console.debug("delete if contains: "+JSON.stringify(this.roomsSelected));
+        }      
+      }
+    }
+    if(rTypeClPrg != undefined && !contains){
+      this.roomTypeClientProgramsSelected.push(rTypeClPrg);
+    }else{
+      this.roomTypeClientProgramsSelected.splice(this.roomTypeClientProgramsSelected.indexOf(rTypeClPrg),1);
+    }
+    //console.debug("this.roomTypeClientProgramsSelected: "+JSON.stringify( this.roomTypeClientProgramsSelected));
   }
 
   setAvailType(type:string){
