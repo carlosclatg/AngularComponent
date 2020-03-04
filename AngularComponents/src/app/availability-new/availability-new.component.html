@@ -1,4 +1,5 @@
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="https://use.typekit.net/iqa7las.css">
  <!-- <ul *ngFor="let program of availAdd?.inventoryOfPrograms">
     <li>{{program | json}}</li>
     <ul *ngFor="let entryRoomType of availAdd?.mapRoomTypeDTOClientProgram"> -->
@@ -21,22 +22,17 @@
         Last Name:
         <input type="text" formControlName="cognoms">
         </label> -->
-        <p class="typoTitleSteps">Create new avail</p>
-        <span id="periodsStep" [style.display]="showPeriods? 'block' : 'none'">
+        <h1 class="typoTitleSteps tk-futura-pt-bold">Create new avail</h1>
+        <div id="periodsStep" class="contentDiv" [style.display]="showPeriods? 'block' : 'none'">
             <span class="stepDescription">Set dates of new period(s) (1/3)</span>
             <form [formGroup]="periodsForm">
                 <div *ngFor="let periodFrom of periodsFrom.controls; let i=index" class="row">
                         <!-- The repeated alias template -->
-
-                    <div class="col-md-2">
-                        <input type="date" class="datepicker" [formControl]="periodsFrom.controls[i]">
-                    </div>
-                    <div class="col-md-1 to">To</div>
-                    <div class="col-md-2">
-                        <input type="date" class="datepicker" [formControl]="periodsTo.controls[i]">
-                    </div>
-                    <div class="col-md-1 lessButton">
-                        <button *ngIf="i!=0" class="btn btn-primary btn-sm" type="button" (click)="deletePeriod(i)">-</button>
+                    <div>
+                        <input type="date" class="datepicker Year" [formControl]="periodsFrom.controls[i]">
+                         To
+                        <input type="date" class="datepicker Year" [formControl]="periodsTo.controls[i]">
+                        <span *ngIf="i!=0" (click)="deletePeriod(i)">X Delete line</span>
                     </div>
                 </div>
             </form>
@@ -44,7 +40,7 @@
             <div class="row nextStep">
                <div class="col-md-1"><button class="btn btn-secondary btn-sm" type="button" id="toAvailType" (click)="changeModalStep('showAvailType',false)">Next</button></div>
             </div>
-        </span>
+        </div>
 
         <span id="availTypeStep" [style.display]="showAvailType? 'block' : 'none'">
             <span class="stepDescription">Choose Type (2/3)</span>
@@ -120,8 +116,9 @@
                                 </div>
                                 <div class="col-md-4 divAvailModeAndStockSelect">
                                     <span>Type</span>
-                                    <select class="availModeSelect" [formControl]="availModeFormArray.controls[i]">
-                                        <option value="freeSale" default><span>F </span> <span *ngIf="availModeFormArray.controls[i].value != 'freeSale'">Free Sale</span></option>
+                                    <select class="availModeSelect" (change)="checkIfModeIsStock(availModeFormArray.controls[i].value,stockFormArray.controls[i])" [formControl]="availModeFormArray.controls[i]">
+                                        <option value="" default></option>
+                                        <option value="freeSale"><span>F </span> <span *ngIf="availModeFormArray.controls[i].value != 'freeSale'">Free Sale</span></option>
                                         <option value="stock"><span>999 </span><span *ngIf="availModeFormArray.controls[i].value != 'stock'">Stock</span></option>
                                         <option value="flex"><span>FLEX 999 </span> <span *ngIf="availModeFormArray.controls[i].value != 'flex'">Flexible</span></option>
                                         <option value="contracted"><span>CONT 999 </span> <span *ngIf="availModeFormArray.controls[i].value != 'contracted'">Contracted</span></option>

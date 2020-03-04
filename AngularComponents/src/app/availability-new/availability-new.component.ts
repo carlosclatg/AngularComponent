@@ -63,6 +63,7 @@ export class AvailabilityNewComponent implements OnInit {
   roomTypeClientProgramsSelected:Array<RoomTypeClientPrograms> = new Array();
   distributionType:Array<ClientProgram> = new Array();
   activateDistributionSelect:boolean = false;
+  stockInputDisabled:boolean = true;
   //Form step 1 periods
   periodsForm = this.fb.group({
     // nom : ['', Validators.required],
@@ -145,7 +146,6 @@ export class AvailabilityNewComponent implements OnInit {
       let periodFromtoDTO = new PeriodFromTo(this.periodsFrom.at(index).value,this.periodsTo.at(index).value);
       periodsFromToDTO.push(periodFromtoDTO);
     }
-    console.debug(periodsFromToDTO);
   }
 
   showDialog(){
@@ -201,6 +201,7 @@ export class AvailabilityNewComponent implements OnInit {
   createFormControlsForProgramsByRoom(type:string){
     this.distributionTypeFormArray = new FormArray([]);
     this.availModeFormArray = new FormArray([]);
+    this.stockFormArray = new FormArray([])
     this.weekDaysMoFormArray = new FormArray([]);
     this.weekDaysTuFormArray = new FormArray([]);
     this.weekDaysWeFormArray = new FormArray([]);
@@ -221,6 +222,7 @@ export class AvailabilityNewComponent implements OnInit {
       for (let index = 0; index < this.roomTypeClientProgramsSelected.length; index++) {
         this.distributionTypeFormArray.push(new FormControl({value:'',disabled: this.activateDistributionSelect},Validators.required));
         this.availModeFormArray.push(new FormControl(''));
+        this.stockFormArray.push(new FormControl(''));
         this.weekDaysMoFormArray.push(new FormControl(''));
         this.weekDaysTuFormArray.push(new FormControl('')); 
         this.weekDaysWeFormArray.push(new FormControl(''));
@@ -241,6 +243,7 @@ export class AvailabilityNewComponent implements OnInit {
       }
     }else{
       this.distributionTypeFormArray.push(new FormControl({value:'',disabled: this.activateDistributionSelect},Validators.required));
+      this.stockFormArray.push(new FormControl(''));
       this.availModeFormArray.push(new FormControl(''));
       this.weekDaysMoFormArray.push(new FormControl(''));
       this.weekDaysTuFormArray.push(new FormControl('')); 
@@ -338,4 +341,16 @@ export class AvailabilityNewComponent implements OnInit {
     //console.debug(this.availTypeForm.controls.availType.value);
 
   }
+
+  checkIfModeIsStock(mode:string,control:any){
+    console.debug("inside change mtehod: "+mode);
+    if(mode == "freeSale" || mode == "request"){
+      this.stockInputDisabled = true;
+      control.disable();
+    }else{
+      this.stockInputDisabled = false;
+      control.enable();
+    }
+  }
+
 }
