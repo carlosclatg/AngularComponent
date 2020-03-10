@@ -38,7 +38,8 @@
             </form>
             <div class="addPeriodButton"><span id="addPeriod" (click)="addPeriod()">&oplus; Add an additional Period</span></div>
             <div class="row nextStep">
-               <div class="col-md-1"><button class="btn btn-secondary btn-sm" type="button" id="toAvailType" (click)="changeModalStep('showAvailType',false)">Next</button></div>
+               <div class="col-md-1"><button class="btn btn-secondary btn-sm" type="button" id="toAvailType" (click)="changeModalStep('showAvailType',false)" 
+                [disabled]="!periodsForm.valid">Next</button></div>
             </div>
         </div>
 
@@ -66,7 +67,7 @@
             </form>
             <div class="row nextStep">
                 <div class="col-md-1"><button class="btn btn-secondary btn-sm" type="button" (click)="changeModalStep('showPeriods',false)">Back</button></div>
-                <div class="col-md-1"><button class="btn btn-secondary btn-sm" type="button" id="toCreateAvail" (click)="changeModalStep('showCreateAvail',false)">Next</button></div>
+                <div class="col-md-1"><button class="btn btn-secondary btn-sm" type="button" [disabled]="!availTypeForm.valid" id="toCreateAvail" (click)="changeModalStep('showCreateAvail',false)">Next</button></div>
             </div>
         </span>
 
@@ -119,10 +120,8 @@
                                     </select>
                                     <span *ngIf="availAdd.inventoryOfPrograms != undefined">
                                         
-                                        <span *ngFor="let program of availAdd.inventoryOfPrograms">
-                                            
+                                        <span *ngFor="let program of availAdd.inventoryOfPrograms">                                 
                                             <input type="hidden" [formControl]="programTypeArray.controls[i]" value="program.programType">
-                                            {{programTypeArray.controls[i].value}}
                                         </span>
                                     </span>
                                 </div>
@@ -144,15 +143,27 @@
                         </div>
                         <div class="col-md-3">
                             <div class="row">
-                                <div class="col-md-1">Mo<input type="checkbox" class="check"  value="monday" [formControl]="weekDaysMoFormArray.controls[i]"></div>
-                                <div class="col-md-1">Tu<input type="checkbox" class="check"  value="tuesday" [formControl]="weekDaysTuFormArray.controls[i]"></div>
-                                <div class="col-md-1">We<input type="checkbox" class="check"  value="wednesday" [formControl]="weekDaysWeFormArray.controls[i]"></div>
-                                <div class="col-md-1">Th<input type="checkbox" class="check"  value="thursday" [formControl]="weekDaysThFormArray.controls[i]"></div>
-                                <div class="col-md-1">Fr<input type="checkbox" class="check"  value="friday" [formControl]="weekDaysFrFormArray.controls[i]"></div>
-                                <div class="col-md-1">Sa<input type="checkbox" class="check"  value="saturday" [formControl]="weekDaysSaFormArray.controls[i]"></div>
-                                <div class="col-md-1">Su<input type="checkbox" class="check"  value="sunday" [formControl]="weekDaysSuFormArray.controls[i]"></div>
-                                <div class="col-md-2">All<input type="checkbox" class="check"  value="sunday" [formControl]="allFormArray.controls[i]"></div>
+                                <div class="col-md-1">Mo<input type="checkbox" (click)="changeCheckboxStatus('weekDaysMoFormArray','weekDaysMo2FormArray',i)" [checked]="weekDaysMoFormArray.controls[i].value" class="check"  value="monday" [formControl]="weekDaysMoFormArray.controls[i]"></div>
+                                <div class="col-md-1">Tu<input type="checkbox" (click)="changeCheckboxStatus('weekDaysTuFormArray','weekDaysTu2FormArray',i)" [checked]="weekDaysTuFormArray.controls[i].value" class="check"  value="tuesday" [formControl]="weekDaysTuFormArray.controls[i]" ></div>
+                                <div class="col-md-1">We<input type="checkbox" (click)="changeCheckboxStatus('weekDaysWeFormArray','weekDaysWe2FormArray',i)" [checked]="weekDaysWeFormArray.controls[i].value" class="check"  value="wednesday" [formControl]="weekDaysWeFormArray.controls[i]"></div>
+                                <div class="col-md-1">Th<input type="checkbox" (click)="changeCheckboxStatus('weekDaysThFormArray','weekDaysTh2FormArray',i)" [checked]="weekDaysThFormArray.controls[i].value" class="check"  value="thursday" [formControl]="weekDaysThFormArray.controls[i]"></div>
+                                <div class="col-md-1">Fr<input type="checkbox" (click)="changeCheckboxStatus('weekDaysFrFormArray','weekDaysFr2FormArray',i)" [checked]="weekDaysFrFormArray.controls[i].value" class="check"  value="friday" [formControl]="weekDaysFrFormArray.controls[i]"></div>
+                                <div class="col-md-1">Sa<input type="checkbox" (click)="changeCheckboxStatus('weekDaysSaFormArray','weekDaysSa2FormArray',i)" [checked]="weekDaysSaFormArray.controls[i].value" class="check"  value="saturday" [formControl]="weekDaysSaFormArray.controls[i]"></div>
+                                <div class="col-md-1">Su<input type="checkbox" (click)="changeCheckboxStatus('weekDaysSuFormArray','weekDaysSu2FormArray',i)" [checked]="weekDaysSuFormArray.controls[i].value" class="check"  value="sunday" [formControl]="weekDaysSuFormArray.controls[i]"></div>
+                                <!-- <div class="col-md-2">All<input type="checkbox" (click)="changeCheckboxStatus('allFormArray',i)" [checked]="true" class="check"  value="sunday" [formControl]="allFormArray.controls[i]"></div> -->
                             </div>
+                            <div class="row" [hidden]="!this.weekDaysMo2FormArray.controls[i].value && !this.weekDaysTu2FormArray.controls[i].value && !this.weekDaysWe2FormArray.controls[i].value && !this.weekDaysTh2FormArray.controls[i].value &&
+                            !this.weekDaysFr2FormArray.controls[i].value && !this.weekDaysSa2FormArray.controls[i].value && !this.weekDaysSu2FormArray.controls[i].value">
+                                <div class="col-md-1">Mo<input type="checkbox" (click)="changeCheckboxStatus('weekDaysMo2FormArray','weekDaysMoFormArray',i)" [checked]="weekDaysMo2FormArray.controls[i].value" class="check"  value="monday" [formControl]="weekDaysMo2FormArray.controls[i]"></div>
+                                <div class="col-md-1">Tu<input type="checkbox" (click)="changeCheckboxStatus('weekDaysTu2FormArray','weekDaysTuFormArray',i)" [checked]="weekDaysTu2FormArray.controls[i].value" class="check"  value="tuesday" [formControl]="weekDaysTu2FormArray.controls[i]" ></div>
+                                <div class="col-md-1">We<input type="checkbox" (click)="changeCheckboxStatus('weekDaysWe2FormArray','weekDaysWeFormArray',i)" [checked]="weekDaysWe2FormArray.controls[i].value" class="check"  value="wednesday" [formControl]="weekDaysWe2FormArray.controls[i]"></div>
+                                <div class="col-md-1">Th<input type="checkbox" (click)="changeCheckboxStatus('weekDaysTh2FormArray','weekDaysThFormArray',i)" [checked]="weekDaysTh2FormArray.controls[i].value" class="check"  value="thursday" [formControl]="weekDaysTh2FormArray.controls[i]"></div>
+                                <div class="col-md-1">Fr<input type="checkbox" (click)="changeCheckboxStatus('weekDaysFr2FormArray','weekDaysFrFormArray',i)" [checked]="weekDaysFr2FormArray.controls[i].value" class="check"  value="friday" [formControl]="weekDaysFr2FormArray.controls[i]"></div>
+                                <div class="col-md-1">Sa<input type="checkbox" (click)="changeCheckboxStatus('weekDaysSa2FormArray','weekDaysSaFormArray',i)" [checked]="weekDaysSa2FormArray.controls[i].value" class="check"  value="saturday" [formControl]="weekDaysSa2FormArray.controls[i]"></div>
+                                <div class="col-md-1">Su<input type="checkbox" (click)="changeCheckboxStatus('weekDaysSu2FormArray','weekDaysSuFormArray',i)" [checked]="weekDaysSu2FormArray.controls[i].value" class="check"  value="sunday" [formControl]="weekDaysSu2FormArray.controls[i]"></div>
+                                <!-- <div class="col-md-2">All<input type="checkbox" (click)="changeCheckboxStatus('allFormArray',i)" class="check"  value="sunday" [formControl]="allFormArray.controls[i]"></div> -->
+                            </div>
+                            <!-- <span>{{weekDaysMoFormArray.controls[i].value}}</span> -->
                         </div>
                         <div class="col-md-4 constraintsArea">
                             <div class="row">
@@ -171,6 +182,24 @@
                                 <div class="col-md-2 minStay">Min<br><input type="text" class="check"  value="wednesday" [formControl]="stayMinFormArray.controls[i]"></div>
                                 <div class="col-md-2">Max<input type="text" class="check"  value="thursday" [formControl]="stayMaxFormArray.controls[i]"></div>
                             </div>
+                            <div class="row" [hidden]="!this.weekDaysMo2FormArray.controls[i].value && !this.weekDaysTu2FormArray.controls[i].value && !this.weekDaysWe2FormArray.controls[i].value && !this.weekDaysTh2FormArray.controls[i].value &&
+                            !this.weekDaysFr2FormArray.controls[i].value && !this.weekDaysSa2FormArray.controls[i].value && !this.weekDaysSu2FormArray.controls[i].value">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-4">RELEASE DATE</div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-2">Stay</div>
+                            </div>
+                            <div class="row" [hidden]="!this.weekDaysMo2FormArray.controls[i].value && !this.weekDaysTu2FormArray.controls[i].value && !this.weekDaysWe2FormArray.controls[i].value && !this.weekDaysTh2FormArray.controls[i].value &&
+                            !this.weekDaysFr2FormArray.controls[i].value && !this.weekDaysSa2FormArray.controls[i].value && !this.weekDaysSu2FormArray.controls[i].value">
+                                <div class="col-md-1 fromToLegend">From</div>
+                                <div class="col-md-1">Day<input type="text" class="check" [formControl]="dayFromFormArray.controls[i]"></div>
+                                <div class="col-md-1">Hour<input type="text" class="check" [formControl]="hourFromFormArray.controls[i]"></div>
+                                <div class="col-md-1 fromToLegend">To</div>
+                                <div class="col-md-1">Day<input type="text" class="check" [formControl]="dayToFormArray.controls[i]"></div>
+                                <div class="col-md-1">Hour<input type="text" class="check" [formControl]="hourToFormArray.controls[i]"></div>
+                                <div class="col-md-2 minStay">Min<br><input type="text" class="check"  value="wednesday" [formControl]="stayMinFormArray.controls[i]"></div>
+                                <div class="col-md-2">Max<input type="text" class="check"  value="thursday" [formControl]="stayMaxFormArray.controls[i]"></div>
+                            </div>
                         </div>
                     </div>
                 <!-- </span> -->
@@ -179,16 +208,13 @@
                 </span> -->
                 <div class="row">
                     <button class="btn btn-secondary btn-sm" type="submit" [disabled]="!createAvailForm.valid">Submit</button>
+                    <!-- <span>{{createAvailForm.valid}} : {{weekDaysMoFormArray.controls}}</span> -->
                 </div>
             </form>
             <div class="row nextStep">
                 <div class="col-md-1"><button type="button" class="button btn btn-secondary btn-sm" (click)="changeModalStep('showAvailType',false)">Back</button></div>
             </div>
-        </span>
-
-        
-
-    
+        </span>    
     <!-- <p>{{ periodsForm.status }} | {{this.periodsForm.value | json}}</p> -->
 </modal>
 </div>

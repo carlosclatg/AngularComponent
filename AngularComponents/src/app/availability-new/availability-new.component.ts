@@ -40,6 +40,8 @@ export class AvailabilityNewComponent implements OnInit {
   //form array for periods form
   periodsFrom:FormArray =  new FormArray([]);
   periodsTo:FormArray =  new FormArray([]);
+  periodsFromSelected:boolean = false;
+  periodsToSelected:boolean = false;
   //formarrays for create avail form
   distributionTypeFormArray:FormArray = new FormArray([]);
   programTypeArray:FormArray = new FormArray([]);
@@ -52,6 +54,13 @@ export class AvailabilityNewComponent implements OnInit {
   weekDaysFrFormArray:FormArray = new FormArray([]);
   weekDaysSaFormArray:FormArray = new FormArray([]);
   weekDaysSuFormArray:FormArray = new FormArray([]);
+  weekDaysMo2FormArray:FormArray = new FormArray([]);
+  weekDaysTu2FormArray:FormArray = new FormArray([]);
+  weekDaysWe2FormArray:FormArray = new FormArray([]);
+  weekDaysTh2FormArray:FormArray = new FormArray([]);
+  weekDaysFr2FormArray:FormArray = new FormArray([]);
+  weekDaysSa2FormArray:FormArray = new FormArray([]);
+  weekDaysSu2FormArray:FormArray = new FormArray([]);
   allFormArray:FormArray = new FormArray([]);
   dayFromFormArray:FormArray = new FormArray([]);
   hourFromFormArray:FormArray = new FormArray([]);
@@ -69,21 +78,22 @@ export class AvailabilityNewComponent implements OnInit {
   distributionType:Array<ClientProgram> = new Array();
   activateDistributionSelect:boolean = false;
   stockInputDisabled:boolean = true;
+  //showSecondCheckRow:boolean = false;
   //Form step 1 periods
   periodsForm = this.fb.group({
-    // nom : ['', Validators.required],
-    // cognoms: ['', Validators.compose( [Validators.minLength(5),Validators.required])],
+    // nom : ["", Validators.required],
+    // cognoms: ["", Validators.compose( [Validators.minLength(5),Validators.required])],
     periodsFrom: this.periodsFrom,
     periodsTo: this.periodsTo
   });
   //Form step 2 avail type
   availTypeForm = this.fb.group({
-    availType: ['',Validators.required]
+    availType: ["",Validators.required]
   });
   //Form step 3 create avail
   createAvailForm = this.fb.group({
-    //roomType: ['',Validators.required],
-    //distributionType: new FormControl({value:'',disabled: this.activateDistributionSelect},Validators.required),
+    //roomType: ["",Validators.required],
+    //distributionType: new FormControl({value:"",disabled: this.activateDistributionSelect},Validators.required),
     distributionType: this.distributionTypeFormArray,
     programType: this.programTypeArray,
     availMode: this.availModeFormArray,
@@ -95,6 +105,13 @@ export class AvailabilityNewComponent implements OnInit {
     weekDaysFr:this.weekDaysFrFormArray,
     weekDaysSa:this.weekDaysSaFormArray,
     weekDaysSu:this.weekDaysSuFormArray,
+    weekDaysMo2:this.weekDaysMo2FormArray,
+    weekDaysTu2:this.weekDaysTu2FormArray,
+    weekDaysWe2:this.weekDaysWe2FormArray,
+    weekDaysTh2:this.weekDaysTh2FormArray,
+    weekDaysFr2:this.weekDaysFr2FormArray,
+    weekDaysSa2:this.weekDaysSa2FormArray,
+    weekDaysSu2:this.weekDaysSu2FormArray,
     all:this.allFormArray,
     dayFrom:this.dayFromFormArray,
     hourFrom:this.hourFromFormArray,
@@ -122,8 +139,8 @@ export class AvailabilityNewComponent implements OnInit {
       }
     });
 
-    this.periodsFrom.push(this.fb.control('',Validators.required));
-    this.periodsTo.push(this.fb.control('',Validators.required));
+    this.periodsFrom.push(this.fb.control("",Validators.required));
+    this.periodsTo.push(this.fb.control("",Validators.required));
 
   }
 
@@ -137,8 +154,8 @@ export class AvailabilityNewComponent implements OnInit {
 
   addPeriod() {
     //let periods = <FormArray>this.modalForm.controls.periods;
-    this.periodsFrom.push(this.fb.control('',Validators.required));
-    this.periodsTo.push(this.fb.control('',Validators.required));
+    this.periodsFrom.push(this.fb.control("",Validators.required));
+    this.periodsTo.push(this.fb.control("",Validators.required));
     //console.debug("periodsFrom length: "+this.periodsFrom.length);
     //console.debug("periodsTo length: "+this.periodsTo.length);
   }
@@ -212,10 +229,7 @@ export class AvailabilityNewComponent implements OnInit {
           }
           releaseRestrictions.push(releaseRestriction);
           availDetail.releaseRestrictions = releaseRestrictions; 
-          //console.debug(this.weekDaysMoFormArray.controls[index].value);
-          //console.debug(weekDays);
-        // }
-          
+         
         availDetails.push(availDetail);
         availRow.availabilityDetails = availDetails;
         availRows.push(availRow);
@@ -227,10 +241,7 @@ export class AvailabilityNewComponent implements OnInit {
       this.availService.saveOrUpdateAvailabilitiesAdd(availAddPostDTO);
     }else if(availType == "room"){
       let availRowsByRoom:Array<AvailabilityRowsByRoomType> = new Array<AvailabilityRowsByRoomType>();
-    }
-
-    
-    
+    } 
   }
 
   showDialog(){
@@ -271,19 +282,19 @@ export class AvailabilityNewComponent implements OnInit {
         this.showPeriods = false;
         this.showAvailType = false;
         this.showCreateAvail = true;
-        this.createFormControlsForProgramsByRoom('room');
+        this.createFormControlsForPrograms('room');
       }else{
         this.showChooseRoomStep = false;
         this.showPeriods = false;
         this.showAvailType = false;
         this.showCreateAvail = true;
-        this.createFormControlsForProgramsByRoom('global');
+        this.createFormControlsForPrograms('global');
       }
         //console.warn('showCreateAvail')
     }
   }
 
-  createFormControlsForProgramsByRoom(type:string){
+  createFormControlsForPrograms(type:string){
     this.distributionTypeFormArray = new FormArray([]);
     this.programTypeArray = new FormArray([]);
     this.availModeFormArray = new FormArray([]);
@@ -305,57 +316,78 @@ export class AvailabilityNewComponent implements OnInit {
     this.stayMinFormArray = new FormArray([]);
     this.stayMaxFormArray = new FormArray([]);
     if(type == "room"){ 
-      for (let index = 0; index < this.roomTypeClientProgramsSelected.length; index++) {
-        this.distributionTypeFormArray.push(new FormControl({value:'',disabled: this.activateDistributionSelect},Validators.required));
-        this.programTypeArray.push(new FormControl(''));
-        this.availModeFormArray.push(new FormControl(''));
-        this.stockFormArray.push(new FormControl(''));
-        this.weekDaysMoFormArray.push(new FormControl(''));
-        this.weekDaysTuFormArray.push(new FormControl('')); 
-        this.weekDaysWeFormArray.push(new FormControl(''));
-        this.weekDaysThFormArray.push(new FormControl(''));
-        this.weekDaysFrFormArray.push(new FormControl(''));
-        this.weekDaysSaFormArray.push(new FormControl(''));
-        this.weekDaysSuFormArray.push(new FormControl(''));
-        this.allFormArray.push(new FormControl(''));
-        this.dayFromFormArray.push(new FormControl(''));
-        this.hourFromFormArray.push(new FormControl(''));
-        this.minuteFromFormArray.push(new FormControl(''));
-        this.dayToFormArray.push(new FormControl(''));
-        this.hourToFormArray.push(new FormControl(''));
-        this.minuteToFormArray.push(new FormControl(''));
-        this.stayMinFormArray.push(new FormControl(''));
-        this.stayMaxFormArray.push(new FormControl(''));
-        
-      }
+      this.createFormcontrolsForRooms();
     }else{
-      this.distributionTypeFormArray.push(new FormControl({value:'',disabled: this.activateDistributionSelect},Validators.required));
-      this.stockFormArray.push(new FormControl(''));
-      this.programTypeArray.push(new FormControl(''));
-      this.availModeFormArray.push(new FormControl(''));
-      this.weekDaysMoFormArray.push(new FormControl(''));
-      this.weekDaysTuFormArray.push(new FormControl('')); 
-      this.weekDaysWeFormArray.push(new FormControl(''));
-      this.weekDaysThFormArray.push(new FormControl(''));
-      this.weekDaysFrFormArray.push(new FormControl(''));
-      this.weekDaysSaFormArray.push(new FormControl(''));
-      this.weekDaysSuFormArray.push(new FormControl(''));
-      this.allFormArray.push(new FormControl(''));
-      this.dayFromFormArray.push(new FormControl(''));
-      this.hourFromFormArray.push(new FormControl(''));
-      this.minuteFromFormArray.push(new FormControl(''));
-      this.dayToFormArray.push(new FormControl(''));
-      this.hourToFormArray.push(new FormControl(''));
-      this.minuteToFormArray.push(new FormControl(''));
-      this.stayMinFormArray.push(new FormControl(''));
-      this.stayMaxFormArray.push(new FormControl(''));
+      this.createFromcontrolsForGlobal();
     }
+  }
+
+  createFormcontrolsForRooms(){
+    for (let index = 0; index < this.roomTypeClientProgramsSelected.length; index++) {
+      this.distributionTypeFormArray.push(new FormControl({value:"",disabled: this.activateDistributionSelect},Validators.required));
+      this.programTypeArray.push(new FormControl("",Validators.required));
+      this.availModeFormArray.push(new FormControl("",Validators.required));
+      this.stockFormArray.push(new FormControl("",Validators.required));
+      this.weekDaysMoFormArray.push(new FormControl("true",Validators.required));
+      this.weekDaysTuFormArray.push(new FormControl("true",Validators.required)); 
+      this.weekDaysWeFormArray.push(new FormControl("true",Validators.required));
+      this.weekDaysThFormArray.push(new FormControl("true",Validators.required));
+      this.weekDaysFrFormArray.push(new FormControl("true",Validators.required));
+      this.weekDaysSaFormArray.push(new FormControl("true",Validators.required));
+      this.weekDaysSuFormArray.push(new FormControl("true",Validators.required));
+      this.weekDaysMo2FormArray.push(new FormControl("",Validators.required));
+      this.weekDaysTu2FormArray.push(new FormControl("",Validators.required)); 
+      this.weekDaysWe2FormArray.push(new FormControl("",Validators.required));
+      this.weekDaysTh2FormArray.push(new FormControl("",Validators.required));
+      this.weekDaysFr2FormArray.push(new FormControl("",Validators.required));
+      this.weekDaysSa2FormArray.push(new FormControl("",Validators.required));
+      this.weekDaysSu2FormArray.push(new FormControl("",Validators.required));
+      this.allFormArray.push(new FormControl("",Validators.required));
+      this.dayFromFormArray.push(new FormControl("",Validators.required));
+      this.hourFromFormArray.push(new FormControl("",Validators.required));
+      this.minuteFromFormArray.push(new FormControl("",Validators.required));
+      this.dayToFormArray.push(new FormControl("",Validators.required));
+      this.hourToFormArray.push(new FormControl("",Validators.required));
+      this.minuteToFormArray.push(new FormControl("",Validators.required));
+      this.stayMinFormArray.push(new FormControl("1"));
+      this.stayMaxFormArray.push(new FormControl(""));
+      
+    }
+  }
+
+  createFromcontrolsForGlobal(){
+    this.distributionTypeFormArray.push(new FormControl({value:"",disabled: this.activateDistributionSelect},Validators.required));
+    this.stockFormArray.push(new FormControl("",Validators.required));
+    this.programTypeArray.push(new FormControl("",Validators.required));
+    this.availModeFormArray.push(new FormControl("",Validators.required));
+    this.weekDaysMoFormArray.push(new FormControl("true",Validators.required));
+    this.weekDaysTuFormArray.push(new FormControl("true",Validators.required)); 
+    this.weekDaysWeFormArray.push(new FormControl("true",Validators.required));
+    this.weekDaysThFormArray.push(new FormControl("true",Validators.required));
+    this.weekDaysFrFormArray.push(new FormControl("true",Validators.required));
+    this.weekDaysSaFormArray.push(new FormControl("true",Validators.required));
+    this.weekDaysSuFormArray.push(new FormControl("true",Validators.required));
+    this.weekDaysMo2FormArray.push(new FormControl("",Validators.required));
+    this.weekDaysTu2FormArray.push(new FormControl("",Validators.required)); 
+    this.weekDaysWe2FormArray.push(new FormControl("",Validators.required));
+    this.weekDaysTh2FormArray.push(new FormControl("",Validators.required));
+    this.weekDaysFr2FormArray.push(new FormControl("",Validators.required));
+    this.weekDaysSa2FormArray.push(new FormControl("",Validators.required));
+    this.weekDaysSu2FormArray.push(new FormControl("",Validators.required));
+    this.allFormArray.push(new FormControl("",Validators.required));
+    this.dayFromFormArray.push(new FormControl("",Validators.required));
+    this.hourFromFormArray.push(new FormControl("",Validators.required));
+    this.minuteFromFormArray.push(new FormControl("",Validators.required));
+    this.dayToFormArray.push(new FormControl("",Validators.required));
+    this.hourToFormArray.push(new FormControl("",Validators.required));
+    this.minuteToFormArray.push(new FormControl("",Validators.required));
+    this.stayMinFormArray.push(new FormControl("1"));
+    this.stayMaxFormArray.push(new FormControl(""));
   }
 
   activatedistributionTypeSelect(){
     //console.warn("this.createAvailForm.controls['roomType'].value: "+this.createAvailForm.controls['roomType'].value)
-    this.distributionType = new Array<ClientProgram>();
-    
+    this.distributionType = new Array<ClientProgram>();  
     if(this.createAvailForm.controls['roomType'].value != ""){
       for(let entry of this.availAdd.mapRoomTypeDTOClientProgram.entries()){
         let mappingroomProgramIds:any = entry[1][0];
@@ -411,8 +443,7 @@ export class AvailabilityNewComponent implements OnInit {
       this.roomTypeClientProgramsSelected.push(rTypeClPrg);
     }else{
       this.distributionTypeFormArray.removeAt(this.distributionTypeFormArray.length-1);
-      this.roomTypeClientProgramsSelected.splice(this.roomTypeClientProgramsSelected.indexOf(rTypeClPrg),1);
-      
+      this.roomTypeClientProgramsSelected.splice(this.roomTypeClientProgramsSelected.indexOf(rTypeClPrg),1);     
       //console.debug("roomTypeClientProgramsSelected: "+this.roomTypeClientProgramsSelected)
     }
     //console.debug("this.roomTypeClientProgramsSelected: "+JSON.stringify( this.roomTypeClientProgramsSelected));
@@ -420,21 +451,20 @@ export class AvailabilityNewComponent implements OnInit {
 
   setAvailType(type:string){
     if(type == "global"){
+      this.availTypeForm.controls.availType.setValue("global");
       this.availIsGlobal = true;
       this.availIsRoom = false;
     }else{
-      this.createFormControlsForProgramsByRoom("room");
+      this.availTypeForm.controls.availType.setValue("room");
+      this.createFormControlsForPrograms("room");
       this.availIsRoom = true;
       this.availIsGlobal = false;
       
     }
     this.availTypeForm.controls.availType.setValue(type);
-    //console.debug(this.availTypeForm.controls.availType.value);
-
   }
 
   checkIfModeIsStock(mode:string,control:any){
-    console.debug("inside change mtehod: "+mode);
     if(mode == "freeSale" || mode == "request"){
       this.stockInputDisabled = true;
       control.disable();
@@ -442,6 +472,11 @@ export class AvailabilityNewComponent implements OnInit {
       this.stockInputDisabled = false;
       control.enable();
     }
+  }
+
+  changeCheckboxStatus(checkboxName:string,checkboxOppositeName:string,index:number){
+    this[checkboxName].controls[index].setValue(!this[checkboxName].controls[index].value)
+    this[checkboxOppositeName].controls[index].setValue(!this[checkboxOppositeName].controls[index].value)
   }
 
 }
