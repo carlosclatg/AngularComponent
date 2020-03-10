@@ -13,6 +13,10 @@ import { RoomType } from 'src/DTO/availabilityNew/roomType';
 import { ClientProgram } from 'src/DTO/availabilityNew/clientProgram';
 import { analyzeFileForInjectables } from '@angular/compiler';
 import { RoomTypeClientPrograms } from 'src/DTO/availabilityNew/roomTypeClientPrograms';
+import { AvailabilityRow } from 'src/DTO/availabilityNew/availabilityRow';
+import { AvailabilityRowsByRoomType } from 'src/DTO/availabilityNew/availabilityRowsByRoomType';
+import { AvailabilityDetails } from 'src/DTO/availabilityNew/availabilityDetails';
+import { ReleaseRestriction } from 'src/DTO/availabilityNew/releaseRestriction';
 
 @Component({
   selector: 'availability-new',
@@ -38,6 +42,7 @@ export class AvailabilityNewComponent implements OnInit {
   periodsTo:FormArray =  new FormArray([]);
   //formarrays for create avail form
   distributionTypeFormArray:FormArray = new FormArray([]);
+  programTypeArray:FormArray = new FormArray([]);
   availModeFormArray:FormArray = new FormArray([]);
   stockFormArray:FormArray = new FormArray([]);
   weekDaysMoFormArray:FormArray = new FormArray([]);
@@ -80,6 +85,7 @@ export class AvailabilityNewComponent implements OnInit {
     //roomType: ['',Validators.required],
     //distributionType: new FormControl({value:'',disabled: this.activateDistributionSelect},Validators.required),
     distributionType: this.distributionTypeFormArray,
+    programType: this.programTypeArray,
     availMode: this.availModeFormArray,
     stock: this.stockFormArray,
     weekDaysMo:this.weekDaysMoFormArray,
@@ -105,10 +111,12 @@ export class AvailabilityNewComponent implements OnInit {
     private el: ElementRef, private fb: FormBuilder) { }
   
   ngOnInit() {
-    this.test = forkJoin(this.availService.saveOrUpdateAvailabilitiesAdd(new AvailabilityAddPostDTO("room",new Array<PeriodFromTo>())),
+    this.test = forkJoin(this.availService.saveOrUpdateAvailabilitiesAdd(new AvailabilityAddPostDTO("room",new Array<PeriodFromTo>(),
+    new Array<AvailabilityRow>())),
     this.availService.getAvailabilitiesByAccom()).subscribe(([res1, res2]) => {
       console.log(res1);
       this.availAdd = res2;
+      console.log(res2);
       for(let key of this.availAdd.mapRoomTypeDTOClientProgram.entries()){
         this.roomType.push(key[1][0]);
       }
@@ -141,11 +149,88 @@ export class AvailabilityNewComponent implements OnInit {
   }
 
   onSubmit() {
+    //periods
     let periodsFromToDTO = new Array<PeriodFromTo>();
     for (let index = 0; index < this.periodsFrom.length; index++) {
       let periodFromtoDTO = new PeriodFromTo(this.periodsFrom.at(index).value,this.periodsTo.at(index).value);
       periodsFromToDTO.push(periodFromtoDTO);
     }
+    //type of load
+    let availType:string = this.availTypeForm.controls.availType.value;
+    //avails
+    if(availType == "global"){
+      let availRows:Array<AvailabilityRow> = new Array<AvailabilityRow>();
+      let availDetails:Array<AvailabilityDetails> = new Array<AvailabilityDetails>();
+      let releaseRestrictions:Array<ReleaseRestriction> = new Array<ReleaseRestriction>();
+      for(let index = 0; index < this.distributionTypeFormArray.length; index++){
+        let availRow:AvailabilityRow = new AvailabilityRow();       
+        // for(let i = 0; i < this.availModeFormArray.length; i++){
+          let availDetail:AvailabilityDetails = new AvailabilityDetails();
+          availDetail.inventoryType = this.availModeFormArray.controls[index].value;
+          if(availDetail.inventoryType != "freeSale" && availDetail.inventoryType != "request"){
+            availDetail.stock = this.stockFormArray.controls[index].value;
+          }
+          //weekDays
+          let weekDays:string = "";
+          if(this.allFormArray.controls[index].value){
+            weekDays = "monday|tuesday|wednesday|thursday|friday|saturday|sunday"
+          }else{
+            if(this.weekDaysMoFormArray.controls[index].value){
+              weekDays += "monday"
+            }
+            if(this.weekDaysTuFormArray.controls[index].value){
+              weekDays += "|tuesday"
+            }
+            if(this.weekDaysWeFormArray.controls[index].value){
+              weekDays += "|wednesday"
+            }
+            if(this.weekDaysThFormArray.controls[index].value){
+              weekDays += "|thursday"
+            }
+            if(this.weekDaysFrFormArray.controls[index].value){
+              weekDays += "|friday"
+            }
+            if(this.weekDaysSaFormArray.controls[index].value){
+              weekDays += "|saturday"
+            }
+            if(this.weekDaysSuFormArray.controls[index].value){
+              weekDays += "|sunday"
+            }
+          }
+          availDetail.weekDays = weekDays;
+          //release restrictions
+          let releaseRestriction:ReleaseRestriction = new ReleaseRestriction();
+          releaseRestriction.from = this.dayFromFormArray.controls[index].value;
+          releaseRestriction.fromH = this.hourFromFormArray.controls[index].value;
+          releaseRestriction.fromM = this.minuteFromFormArray.controls[index].value;
+          releaseRestriction.to = this.dayToFormArray.controls[index].value;
+          releaseRestriction.toH = this.hourToFormArray.controls[index].value;
+          releaseRestriction.toM = this.minuteToFormArray.controls[index].value;  
+          console.debug(this.programTypeArray.controls[index].value);      
+          if(this.programTypeArray.controls[index].value == "private"){           
+            releaseRestriction.clientProgramId = this.distributionTypeFormArray.controls[index].value;
+          }
+          releaseRestrictions.push(releaseRestriction);
+          availDetail.releaseRestrictions = releaseRestrictions; 
+          //console.debug(this.weekDaysMoFormArray.controls[index].value);
+          //console.debug(weekDays);
+        // }
+          
+        availDetails.push(availDetail);
+        availRow.availabilityDetails = availDetails;
+        availRows.push(availRow);
+      }
+          //post DTO construction
+      let availAddPostDTO:AvailabilityAddPostDTO = new AvailabilityAddPostDTO(availType,
+      periodsFromToDTO,availRows);
+      console.debug(availAddPostDTO);
+      this.availService.saveOrUpdateAvailabilitiesAdd(availAddPostDTO);
+    }else if(availType == "room"){
+      let availRowsByRoom:Array<AvailabilityRowsByRoomType> = new Array<AvailabilityRowsByRoomType>();
+    }
+
+    
+    
   }
 
   showDialog(){
@@ -200,6 +285,7 @@ export class AvailabilityNewComponent implements OnInit {
 
   createFormControlsForProgramsByRoom(type:string){
     this.distributionTypeFormArray = new FormArray([]);
+    this.programTypeArray = new FormArray([]);
     this.availModeFormArray = new FormArray([]);
     this.stockFormArray = new FormArray([])
     this.weekDaysMoFormArray = new FormArray([]);
@@ -221,6 +307,7 @@ export class AvailabilityNewComponent implements OnInit {
     if(type == "room"){ 
       for (let index = 0; index < this.roomTypeClientProgramsSelected.length; index++) {
         this.distributionTypeFormArray.push(new FormControl({value:'',disabled: this.activateDistributionSelect},Validators.required));
+        this.programTypeArray.push(new FormControl(''));
         this.availModeFormArray.push(new FormControl(''));
         this.stockFormArray.push(new FormControl(''));
         this.weekDaysMoFormArray.push(new FormControl(''));
@@ -244,6 +331,7 @@ export class AvailabilityNewComponent implements OnInit {
     }else{
       this.distributionTypeFormArray.push(new FormControl({value:'',disabled: this.activateDistributionSelect},Validators.required));
       this.stockFormArray.push(new FormControl(''));
+      this.programTypeArray.push(new FormControl(''));
       this.availModeFormArray.push(new FormControl(''));
       this.weekDaysMoFormArray.push(new FormControl(''));
       this.weekDaysTuFormArray.push(new FormControl('')); 
@@ -290,7 +378,7 @@ export class AvailabilityNewComponent implements OnInit {
   }
 
   addRoomType(roomId:any){
-    console.debug("roomId"+roomId);
+    //console.debug("roomId"+roomId);
     let rTypeClPrg:RoomTypeClientPrograms;
     let contains:boolean;
     for(let key of this.availAdd.mapRoomTypeDTOClientProgram.entries()){
@@ -322,7 +410,10 @@ export class AvailabilityNewComponent implements OnInit {
     if(rTypeClPrg != undefined && !contains){
       this.roomTypeClientProgramsSelected.push(rTypeClPrg);
     }else{
+      this.distributionTypeFormArray.removeAt(this.distributionTypeFormArray.length-1);
       this.roomTypeClientProgramsSelected.splice(this.roomTypeClientProgramsSelected.indexOf(rTypeClPrg),1);
+      
+      //console.debug("roomTypeClientProgramsSelected: "+this.roomTypeClientProgramsSelected)
     }
     //console.debug("this.roomTypeClientProgramsSelected: "+JSON.stringify( this.roomTypeClientProgramsSelected));
   }

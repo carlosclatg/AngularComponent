@@ -96,7 +96,7 @@
                                     <option value="" default>Room Type</option>
                                     <option *ngFor="let room of roomType" value="{{room.id}}">{{room.label}}</option>
                                 </select> -->
-                                <div *ngIf="availIsRoom" class="col-md-4">
+                                <div *ngIf="availIsRoom && roomTypeClientProgramsSelected[i] != undefined" class="col-md-4">
                                     <select class="distTypeSelect" [formControl]="distributionTypeFormArray.controls[i]">
                                         <option value="" default>Distribution Type</option>
                                         <option *ngFor="let program of roomTypeClientProgramsSelected[i].clientPrograms" value="{{program.clientProgramId}}">
@@ -104,7 +104,11 @@
                                             <span *ngIf="program.programType == 'shared'">{{program.clientProgramSharedGroupName}}</span>
                                         </option>
                                     </select>
+                                    <span *ngFor="let program of roomTypeClientProgramsSelected[i].clientPrograms">
+                                        <input type="hidden" [formControl]="programTypeArray.controls[i]" value="program.programType">
+                                    </span>
                                 </div>
+
                                 <div *ngIf="availIsGlobal" class="col-md-4">
                                     <select class="distTypeSelect" [formControl]="distributionTypeFormArray.controls[i]">
                                         <option value="" default>Distribution Type</option>
@@ -113,6 +117,14 @@
                                             <span *ngIf="program.programType == 'shared'">{{program.clientProgramSharedGroupName}}</span>
                                         </option>
                                     </select>
+                                    <span *ngIf="availAdd.inventoryOfPrograms != undefined">
+                                        
+                                        <span *ngFor="let program of availAdd.inventoryOfPrograms">
+                                            
+                                            <input type="hidden" [formControl]="programTypeArray.controls[i]" value="program.programType">
+                                            {{programTypeArray.controls[i].value}}
+                                        </span>
+                                    </span>
                                 </div>
                                 <div class="col-md-4 divAvailModeAndStockSelect">
                                     <span>Type</span>

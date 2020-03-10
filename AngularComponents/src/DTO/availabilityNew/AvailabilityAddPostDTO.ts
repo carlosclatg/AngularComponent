@@ -10,8 +10,9 @@ export class AvailabilityAddPostDTO{
     availabilityRows:Array<AvailabilityRow>;
     availabilityRowsByRoomTypes:Array<AvailabilityRowsByRoomType>;
 
-    constructor(typeOfLoad:string,periodsFromTo:Array<PeriodFromTo>){
+    constructor(typeOfLoad:string,periodsFromTo:Array<PeriodFromTo>,availabilityRows:Array<AvailabilityRow>){
         this.typeOfLoad = typeOfLoad;
         this.periodsFromTo=periodsFromTo;
+        this.availabilityRows = availabilityRows;
     }
 }
