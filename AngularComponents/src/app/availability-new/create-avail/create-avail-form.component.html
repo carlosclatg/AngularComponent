@@ -1,0 +1,123 @@
+<form [formGroup]="createAvailForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div *ngIf="availIsRoom && roomTypeClientProgram != undefined" class="col-md-12">
+                <span>{{roomTypeClientProgram.roomType.label}}</span>
+            </div>
+            <div class="col-md-5 createAvailSelects">
+                <div class="row">
+                    <!-- <select (change)="activatedistributionTypeSelect()" formControlName="roomType">
+                        <option value="" default>Room Type</option>
+                        <option *ngFor="let room of roomType" value="{{room.id}}">{{room.label}}</option>
+                    </select> -->
+                    <div *ngIf="availIsRoom" class="col-md-4">
+                        <select class="distTypeSelect" formControlName="distributionType">
+                            <option value="" default>Distribution Type</option>
+                            <option *ngFor="let program of roomTypeClientProgram.clientPrograms" value="{{program.clientProgramId}}">
+                                <span *ngIf="program.programType == 'private'">{{program.clientProgramName}}</span>
+                                <span *ngIf="program.programType == 'shared'">{{program.clientProgramSharedGroupName}}</span>
+                            </option>
+                        </select>
+                        <!-- <span *ngFor="let program of roomTypeClientProgramsSelected[i].clientPrograms"> -->
+                            <input type="hidden" formControlName="programType" value="this.createAvailForm.controls.distributionType">
+                        <!-- </span> -->
+                    </div>
+
+                    <div *ngIf="availIsGlobal" class="col-md-4">
+                        <select class="distTypeSelect" formControlName="distributionType">
+                            <option value="" default>Distribution Type</option>
+                            <option *ngFor="let program of availAdd.inventoryOfPrograms" value="{{program.clientProgramId}}">
+                                <span *ngIf="program.programType == 'private'">{{program.clientProgramName}}</span>
+                                <span *ngIf="program.programType == 'shared'">{{program.clientProgramSharedGroupName}}</span>
+                            </option>
+                        </select>
+                        <span *ngIf="availAdd.inventoryOfPrograms != undefined">
+                            
+                            <span *ngFor="let program of availAdd.inventoryOfPrograms">                                 
+                                <input type="hidden" formControlName="programType" value="program.programType">
+                            </span>
+                        </span>
+                    </div>
+                    <div class="col-md-4 divAvailModeAndStockSelect">
+                        <span>Type</span>
+                        <select class="availModeSelect" (change)="checkIfModeIsStock(this.createAvailForm.controls.availMode.value,this.createAvailForm.controls.stock)" formControlName="availMode">
+                            <option value="" default></option>
+                            <option value="freeSale"><span>F </span> <span *ngIf="this.createAvailForm.controls.availMode.value != 'freeSale'">Free Sale</span></option>
+                            <option value="stock"><span>999 </span><span *ngIf="this.createAvailForm.controls.availMode.value != 'stock'">Stock</span></option>
+                            <option value="flex"><span>FLEX 999 </span> <span *ngIf="this.createAvailForm.controls.availMode.value != 'flex'">Flexible</span></option>
+                            <option value="contracted"><span>CONT 999 </span> <span *ngIf="this.createAvailForm.controls.availMode.value != 'contracted'">Contracted</span></option>
+                            <option value="request"><span>RQ </span><span *ngIf="this.createAvailForm.controls.availMode.value != 'request'">Request</span></option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 divAvailModeAndStockSelect">
+                        Stock<input type="text" class="stockInput" formControlName="stock">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-1">Mo<input type="checkbox" (click)="changeCheckboxStatus('weekDaysMo','weekDaysMo2')" [checked]="createAvailForm.controls.weekDaysMo.value" class="check"  value="monday" formControlName="weekDaysMo"></div>
+                    <div class="col-md-1">Tu<input type="checkbox" (click)="changeCheckboxStatus('weekDaysTu','weekDaysTu2')" [checked]="createAvailForm.controls.weekDaysTu.value" class="check"  value="tuesday" formControlName="weekDaysTu" ></div>
+                    <div class="col-md-1">We<input type="checkbox" (click)="changeCheckboxStatus('weekDaysWe','weekDaysWe2')" [checked]="createAvailForm.controls.weekDaysWe.value" class="check"  value="wednesday" formControlName="weekDaysWe"></div>
+                    <div class="col-md-1">Th<input type="checkbox" (click)="changeCheckboxStatus('weekDaysTh','weekDaysTh2')" [checked]="createAvailForm.controls.weekDaysTh.value" class="check"  value="thursday" formControlName="weekDaysTh"></div>
+                    <div class="col-md-1">Fr<input type="checkbox" (click)="changeCheckboxStatus('weekDaysFr','weekDaysFr2')" [checked]="createAvailForm.controls.weekDaysFr.value" class="check"  value="friday" formControlName="weekDaysFr"></div>
+                    <div class="col-md-1">Sa<input type="checkbox" (click)="changeCheckboxStatus('weekDaysSa','weekDaysSa2')" [checked]="createAvailForm.controls.weekDaysSa.value" class="check"  value="saturday" formControlName="weekDaysSa"></div>
+                    <div class="col-md-1">Su<input type="checkbox" (click)="changeCheckboxStatus('weekDaysSu','weekDaysSu2')" [checked]="createAvailForm.controls.weekDaysSu.value" class="check"  value="sunday" formControlName="weekDaysSu"></div>
+                </div>
+                <div class="row" [hidden]="!this.createAvailForm.controls.weekDaysMo2.value && !this.createAvailForm.controls.weekDaysTu2.value && !this.createAvailForm.controls.weekDaysWe2.value && !this.createAvailForm.controls.weekDaysTh2.value &&
+                !this.createAvailForm.controls.weekDaysFr2.value && !this.createAvailForm.controls.weekDaysSa2.value && !this.createAvailForm.controls.weekDaysSu2.value">
+                    <div class="col-md-1">Mo<input type="checkbox" (click)="changeCheckboxStatus('weekDaysMo2','weekDaysMo')" [checked]="createAvailForm.controls.weekDaysMo2.value" class="check"  value="monday" formControlName="weekDaysMo2"></div>
+                    <div class="col-md-1">Tu<input type="checkbox" (click)="changeCheckboxStatus('weekDaysTu2','weekDaysTu')" [checked]="createAvailForm.controls.weekDaysTu2.value" class="check"  value="tuesday" formControlName="weekDaysTu2" ></div>
+                    <div class="col-md-1">We<input type="checkbox" (click)="changeCheckboxStatus('weekDaysWe2','weekDaysWe')" [checked]="createAvailForm.controls.weekDaysWe2.value" class="check"  value="wednesday" formControlName="weekDaysWe2"></div>
+                    <div class="col-md-1">Th<input type="checkbox" (click)="changeCheckboxStatus('weekDaysTh2','weekDaysTh')" [checked]="createAvailForm.controls.weekDaysTh2.value" class="check"  value="thursday" formControlName="weekDaysTh2"></div>
+                    <div class="col-md-1">Fr<input type="checkbox" (click)="changeCheckboxStatus('weekDaysFr2','weekDaysFr')" [checked]="createAvailForm.controls.weekDaysFr2.value" class="check"  value="friday" formControlName="weekDaysFr2"></div>
+                    <div class="col-md-1">Sa<input type="checkbox" (click)="changeCheckboxStatus('weekDaysSa2','weekDaysSa')" [checked]="createAvailForm.controls.weekDaysSa2.value" class="check"  value="saturday" formControlName="weekDaysSa2"></div>
+                    <div class="col-md-1">Su<input type="checkbox" (click)="changeCheckboxStatus('weekDaysSu2','weekDaysSu')" [checked]="createAvailForm.controls.weekDaysSu2.value" class="check"  value="sunday" formControlName="weekDaysSu2"></div>
+                </div>
+            </div>
+            <div class="col-md-4 constraintsArea">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">RELEASE DATE</div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">Stay</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1 fromToLegend">From</div>
+                    <div class="col-md-1">Day<input type="text" class="check" formControlName="dayFrom"></div>
+                    <div class="col-md-1">Hour<input type="text" class="check" formControlName="hourFrom"></div>
+                    <div class="col-md-1 fromToLegend">To</div>
+                    <div class="col-md-1">Day<input type="text" class="check" formControlName="dayTo"></div>
+                    <div class="col-md-1">Hour<input type="text" class="check" formControlName="hourTo"></div>
+                    <div class="col-md-2 minStay">Min<br><input type="text" class="check"  value="wednesday" formControlName="stayMin"></div>
+                    <div class="col-md-2">Max<input type="text" class="check"  value="thursday" formControlName="stayMax"></div>
+                </div>
+                <div class="row" [hidden]="!this.createAvailForm.controls.weekDaysMo2.value && !this.createAvailForm.controls.weekDaysTu2.value && !this.createAvailForm.controls.weekDaysWe2.value && !this.createAvailForm.controls.weekDaysTh2.value &&
+                !this.createAvailForm.controls.weekDaysFr2.value && !this.createAvailForm.controls.weekDaysSa2.value && !this.createAvailForm.controls.weekDaysSu2.value">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">RELEASE DATE</div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">Stay</div>
+                </div>
+                <div class="row" [hidden]="!this.createAvailForm.controls.weekDaysMo2.value && !this.createAvailForm.controls.weekDaysTu2.value && !this.createAvailForm.controls.weekDaysWe2.value && !this.createAvailForm.controls.weekDaysTh2.value &&
+                !this.createAvailForm.controls.weekDaysFr2.value && !this.createAvailForm.controls.weekDaysSa2.value && !this.createAvailForm.controls.weekDaysSu2.value">
+                    <div class="col-md-1 fromToLegend">From</div>
+                    <div class="col-md-1">Day<input type="text" class="check" formControlName="dayFrom"></div>
+                    <div class="col-md-1">Hour<input type="text" class="check" formControlName="hourFrom"></div>
+                    <div class="col-md-1 fromToLegend">To</div>
+                    <div class="col-md-1">Day<input type="text" class="check" formControlName="dayTo"></div>
+                    <div class="col-md-1">Hour<input type="text" class="check" formControlName="hourTo"></div>
+                    <div class="col-md-2 minStay">Min<br><input type="text" class="check"  value="wednesday" formControlName="stayMin"></div>
+                    <div class="col-md-2">Max<input type="text" class="check"  value="thursday" formControlName="stayMax"></div>
+                </div>
+            </div>
+            <div>
+                <div>
+                    
+                    <!-- <div style="width: 15%;"><span>Duplicate criteria</span></div> -->
+                </div>    
+            </div>
+        </div>
+    <!-- <div class="row">
+        <button class="btn btn-secondary btn-sm" type="submit" [disabled]="!createAvailForm.valid">Submit</button>
+    </div> -->
+</form>

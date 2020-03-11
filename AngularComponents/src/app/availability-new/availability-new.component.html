@@ -13,15 +13,6 @@
     <div class="closeModal">
         <span (click)="closeDialog()">X</span>
     </div>
-    <!-- <form [formGroup]="availAddForm" (ngSubmit)="onSubmit()"> -->
-        <!-- <label>
-            First Name:
-            <input type="text" formControlName="nom">
-        </label>        
-        <label>
-        Last Name:
-        <input type="text" formControlName="cognoms">
-        </label> -->
         <h1 class="typoTitleSteps tk-futura-pt-bold">Create new avail</h1>
         <div id="periodsStep" class="contentDiv" [style.display]="showPeriods? 'block' : 'none'">
             <span class="stepDescription">Set dates of new period(s) (1/3)</span>
@@ -45,22 +36,12 @@
 
         <span id="availTypeStep" [style.display]="showAvailType? 'block' : 'none'">
             <span class="stepDescription">Choose Type (2/3)</span>
-            <form [formGroup]="availTypeForm">
-                <!-- <label>
-                    Availability type:
-                    <select formControlName="availType">
-                        <option value="global">Global</option>
-                        <option value="room">By RoomType</option>
-                    </select>
-                </label> -->
-                <div class="row">
-                        <!-- <i class="fas fa-bed"></i> -->
+            <form [formGroup]="availTypeForm">>
+                <div class="row">>
                     <div (click)="setAvailType('room')" class="col-md-2 radioAvailType" [style.background-color]="availIsRoom? '#298da7' : 'white'">
-                        <!-- <img src="assets/images/fontAwesomeBedIcon.png"> -->
                         <span>Room Type</span><br>availability
                     </div>
                     <div (click)="setAvailType('global')" class="col-md-2 radioAvailType" [style.background-color]="availIsGlobal? '#298da7' : 'white'">
-                        <!-- <i class="bed"></i> -->
                         <span>Global</span><br> Availability
                     </div>
                 </div>
@@ -83,138 +64,23 @@
             </div>
         </span>
 
-        <span id="createAvailStep" [style.display]="showCreateAvail? 'block' : 'none'">       
-            <form [formGroup]="createAvailForm" (ngSubmit)="onSubmit()">
-                <span class="stepDescription">Create (3/3)</span>
-                <!-- <span *ngIf="availTypeForm.controls.availType.value == 'room'" class="roomTypeCreate"> -->
-                    <div *ngFor="let distribution of distributionTypeFormArray.controls; let i=index" class="row">
-                        <div *ngIf="availTypeForm.controls.availType.value == 'room' && roomTypeClientProgramsSelected != undefined" class="col-md-12">
-                            <span>{{roomTypeClientProgramsSelected[i].roomType.label}}</span>
-                        </div>
-                        <div class="col-md-5 createAvailSelects">
-                            <div class="row">
-                                <!-- <select (change)="activatedistributionTypeSelect()" formControlName="roomType">
-                                    <option value="" default>Room Type</option>
-                                    <option *ngFor="let room of roomType" value="{{room.id}}">{{room.label}}</option>
-                                </select> -->
-                                <div *ngIf="availIsRoom && roomTypeClientProgramsSelected[i] != undefined" class="col-md-4">
-                                    <select class="distTypeSelect" [formControl]="distributionTypeFormArray.controls[i]">
-                                        <option value="" default>Distribution Type</option>
-                                        <option *ngFor="let program of roomTypeClientProgramsSelected[i].clientPrograms" value="{{program.clientProgramId}}">
-                                            <span *ngIf="program.programType == 'private'">{{program.clientProgramName}}</span>
-                                            <span *ngIf="program.programType == 'shared'">{{program.clientProgramSharedGroupName}}</span>
-                                        </option>
-                                    </select>
-                                    <span *ngFor="let program of roomTypeClientProgramsSelected[i].clientPrograms">
-                                        <input type="hidden" [formControl]="programTypeArray.controls[i]" value="program.programType">
-                                    </span>
-                                </div>
-
-                                <div *ngIf="availIsGlobal" class="col-md-4">
-                                    <select class="distTypeSelect" [formControl]="distributionTypeFormArray.controls[i]">
-                                        <option value="" default>Distribution Type</option>
-                                        <option *ngFor="let program of availAdd.inventoryOfPrograms" value="{{program.clientProgramId}}">
-                                            <span *ngIf="program.programType == 'private'">{{program.clientProgramName}}</span>
-                                            <span *ngIf="program.programType == 'shared'">{{program.clientProgramSharedGroupName}}</span>
-                                        </option>
-                                    </select>
-                                    <span *ngIf="availAdd.inventoryOfPrograms != undefined">
-                                        
-                                        <span *ngFor="let program of availAdd.inventoryOfPrograms">                                 
-                                            <input type="hidden" [formControl]="programTypeArray.controls[i]" value="program.programType">
-                                        </span>
-                                    </span>
-                                </div>
-                                <div class="col-md-4 divAvailModeAndStockSelect">
-                                    <span>Type</span>
-                                    <select class="availModeSelect" (change)="checkIfModeIsStock(availModeFormArray.controls[i].value,stockFormArray.controls[i])" [formControl]="availModeFormArray.controls[i]">
-                                        <option value="" default></option>
-                                        <option value="freeSale"><span>F </span> <span *ngIf="availModeFormArray.controls[i].value != 'freeSale'">Free Sale</span></option>
-                                        <option value="stock"><span>999 </span><span *ngIf="availModeFormArray.controls[i].value != 'stock'">Stock</span></option>
-                                        <option value="flex"><span>FLEX 999 </span> <span *ngIf="availModeFormArray.controls[i].value != 'flex'">Flexible</span></option>
-                                        <option value="contracted"><span>CONT 999 </span> <span *ngIf="availModeFormArray.controls[i].value != 'contracted'">Contracted</span></option>
-                                        <option value="request"><span>RQ </span><span *ngIf="availModeFormArray.controls[i].value != 'request'">Request</span></option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2 divAvailModeAndStockSelect">
-                                    Stock<input type="text" class="stockInput" [formControl]="stockFormArray.controls[i]">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="row">
-                                <div class="col-md-1">Mo<input type="checkbox" (click)="changeCheckboxStatus('weekDaysMoFormArray','weekDaysMo2FormArray',i)" [checked]="weekDaysMoFormArray.controls[i].value" class="check"  value="monday" [formControl]="weekDaysMoFormArray.controls[i]"></div>
-                                <div class="col-md-1">Tu<input type="checkbox" (click)="changeCheckboxStatus('weekDaysTuFormArray','weekDaysTu2FormArray',i)" [checked]="weekDaysTuFormArray.controls[i].value" class="check"  value="tuesday" [formControl]="weekDaysTuFormArray.controls[i]" ></div>
-                                <div class="col-md-1">We<input type="checkbox" (click)="changeCheckboxStatus('weekDaysWeFormArray','weekDaysWe2FormArray',i)" [checked]="weekDaysWeFormArray.controls[i].value" class="check"  value="wednesday" [formControl]="weekDaysWeFormArray.controls[i]"></div>
-                                <div class="col-md-1">Th<input type="checkbox" (click)="changeCheckboxStatus('weekDaysThFormArray','weekDaysTh2FormArray',i)" [checked]="weekDaysThFormArray.controls[i].value" class="check"  value="thursday" [formControl]="weekDaysThFormArray.controls[i]"></div>
-                                <div class="col-md-1">Fr<input type="checkbox" (click)="changeCheckboxStatus('weekDaysFrFormArray','weekDaysFr2FormArray',i)" [checked]="weekDaysFrFormArray.controls[i].value" class="check"  value="friday" [formControl]="weekDaysFrFormArray.controls[i]"></div>
-                                <div class="col-md-1">Sa<input type="checkbox" (click)="changeCheckboxStatus('weekDaysSaFormArray','weekDaysSa2FormArray',i)" [checked]="weekDaysSaFormArray.controls[i].value" class="check"  value="saturday" [formControl]="weekDaysSaFormArray.controls[i]"></div>
-                                <div class="col-md-1">Su<input type="checkbox" (click)="changeCheckboxStatus('weekDaysSuFormArray','weekDaysSu2FormArray',i)" [checked]="weekDaysSuFormArray.controls[i].value" class="check"  value="sunday" [formControl]="weekDaysSuFormArray.controls[i]"></div>
-                                <!-- <div class="col-md-2">All<input type="checkbox" (click)="changeCheckboxStatus('allFormArray',i)" [checked]="true" class="check"  value="sunday" [formControl]="allFormArray.controls[i]"></div> -->
-                            </div>
-                            <div class="row" [hidden]="!this.weekDaysMo2FormArray.controls[i].value && !this.weekDaysTu2FormArray.controls[i].value && !this.weekDaysWe2FormArray.controls[i].value && !this.weekDaysTh2FormArray.controls[i].value &&
-                            !this.weekDaysFr2FormArray.controls[i].value && !this.weekDaysSa2FormArray.controls[i].value && !this.weekDaysSu2FormArray.controls[i].value">
-                                <div class="col-md-1">Mo<input type="checkbox" (click)="changeCheckboxStatus('weekDaysMo2FormArray','weekDaysMoFormArray',i)" [checked]="weekDaysMo2FormArray.controls[i].value" class="check"  value="monday" [formControl]="weekDaysMo2FormArray.controls[i]"></div>
-                                <div class="col-md-1">Tu<input type="checkbox" (click)="changeCheckboxStatus('weekDaysTu2FormArray','weekDaysTuFormArray',i)" [checked]="weekDaysTu2FormArray.controls[i].value" class="check"  value="tuesday" [formControl]="weekDaysTu2FormArray.controls[i]" ></div>
-                                <div class="col-md-1">We<input type="checkbox" (click)="changeCheckboxStatus('weekDaysWe2FormArray','weekDaysWeFormArray',i)" [checked]="weekDaysWe2FormArray.controls[i].value" class="check"  value="wednesday" [formControl]="weekDaysWe2FormArray.controls[i]"></div>
-                                <div class="col-md-1">Th<input type="checkbox" (click)="changeCheckboxStatus('weekDaysTh2FormArray','weekDaysThFormArray',i)" [checked]="weekDaysTh2FormArray.controls[i].value" class="check"  value="thursday" [formControl]="weekDaysTh2FormArray.controls[i]"></div>
-                                <div class="col-md-1">Fr<input type="checkbox" (click)="changeCheckboxStatus('weekDaysFr2FormArray','weekDaysFrFormArray',i)" [checked]="weekDaysFr2FormArray.controls[i].value" class="check"  value="friday" [formControl]="weekDaysFr2FormArray.controls[i]"></div>
-                                <div class="col-md-1">Sa<input type="checkbox" (click)="changeCheckboxStatus('weekDaysSa2FormArray','weekDaysSaFormArray',i)" [checked]="weekDaysSa2FormArray.controls[i].value" class="check"  value="saturday" [formControl]="weekDaysSa2FormArray.controls[i]"></div>
-                                <div class="col-md-1">Su<input type="checkbox" (click)="changeCheckboxStatus('weekDaysSu2FormArray','weekDaysSuFormArray',i)" [checked]="weekDaysSu2FormArray.controls[i].value" class="check"  value="sunday" [formControl]="weekDaysSu2FormArray.controls[i]"></div>
-                                <!-- <div class="col-md-2">All<input type="checkbox" (click)="changeCheckboxStatus('allFormArray',i)" class="check"  value="sunday" [formControl]="allFormArray.controls[i]"></div> -->
-                            </div>
-                            <!-- <span>{{weekDaysMoFormArray.controls[i].value}}</span> -->
-                        </div>
-                        <div class="col-md-4 constraintsArea">
-                            <div class="row">
-                                <div class="col-md-2"></div>
-                                <div class="col-md-4">RELEASE DATE</div>
-                                <div class="col-md-1"></div>
-                                <div class="col-md-2">Stay</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-1 fromToLegend">From</div>
-                                <div class="col-md-1">Day<input type="text" class="check" [formControl]="dayFromFormArray.controls[i]"></div>
-                                <div class="col-md-1">Hour<input type="text" class="check" [formControl]="hourFromFormArray.controls[i]"></div>
-                                <div class="col-md-1 fromToLegend">To</div>
-                                <div class="col-md-1">Day<input type="text" class="check" [formControl]="dayToFormArray.controls[i]"></div>
-                                <div class="col-md-1">Hour<input type="text" class="check" [formControl]="hourToFormArray.controls[i]"></div>
-                                <div class="col-md-2 minStay">Min<br><input type="text" class="check"  value="wednesday" [formControl]="stayMinFormArray.controls[i]"></div>
-                                <div class="col-md-2">Max<input type="text" class="check"  value="thursday" [formControl]="stayMaxFormArray.controls[i]"></div>
-                            </div>
-                            <div class="row" [hidden]="!this.weekDaysMo2FormArray.controls[i].value && !this.weekDaysTu2FormArray.controls[i].value && !this.weekDaysWe2FormArray.controls[i].value && !this.weekDaysTh2FormArray.controls[i].value &&
-                            !this.weekDaysFr2FormArray.controls[i].value && !this.weekDaysSa2FormArray.controls[i].value && !this.weekDaysSu2FormArray.controls[i].value">
-                                <div class="col-md-2"></div>
-                                <div class="col-md-4">RELEASE DATE</div>
-                                <div class="col-md-1"></div>
-                                <div class="col-md-2">Stay</div>
-                            </div>
-                            <div class="row" [hidden]="!this.weekDaysMo2FormArray.controls[i].value && !this.weekDaysTu2FormArray.controls[i].value && !this.weekDaysWe2FormArray.controls[i].value && !this.weekDaysTh2FormArray.controls[i].value &&
-                            !this.weekDaysFr2FormArray.controls[i].value && !this.weekDaysSa2FormArray.controls[i].value && !this.weekDaysSu2FormArray.controls[i].value">
-                                <div class="col-md-1 fromToLegend">From</div>
-                                <div class="col-md-1">Day<input type="text" class="check" [formControl]="dayFromFormArray.controls[i]"></div>
-                                <div class="col-md-1">Hour<input type="text" class="check" [formControl]="hourFromFormArray.controls[i]"></div>
-                                <div class="col-md-1 fromToLegend">To</div>
-                                <div class="col-md-1">Day<input type="text" class="check" [formControl]="dayToFormArray.controls[i]"></div>
-                                <div class="col-md-1">Hour<input type="text" class="check" [formControl]="hourToFormArray.controls[i]"></div>
-                                <div class="col-md-2 minStay">Min<br><input type="text" class="check"  value="wednesday" [formControl]="stayMinFormArray.controls[i]"></div>
-                                <div class="col-md-2">Max<input type="text" class="check"  value="thursday" [formControl]="stayMaxFormArray.controls[i]"></div>
-                            </div>
-                        </div>
-                    </div>
-                <!-- </span> -->
-                <!-- <span *ngIf="availTypeForm.controls.availType.value == 'global'">
-
-                </span> -->
-                <div class="row">
-                    <button class="btn btn-secondary btn-sm" type="submit" [disabled]="!createAvailForm.valid">Submit</button>
-                    <!-- <span>{{createAvailForm.valid}} : {{weekDaysMoFormArray.controls}}</span> -->
-                </div>
-            </form>
-            <div class="row nextStep">
-                <div class="col-md-1"><button type="button" class="button btn btn-secondary btn-sm" (click)="changeModalStep('showAvailType',false)">Back</button></div>
+        <span id="createAvailStep" [style.display]="showCreateAvail? 'block' : 'none'">
+            <span class="stepDescription">Create (3/3)</span>
+            <span *ngIf="availTypeForm.controls.availType.value == 'global'">
+                <create-avail-form [roomTypeClientProgram]="null" [availIsRoom]="availIsRoom" [availIsGlobal]="availIsGlobal" [availAdd]="availAdd" [availType]="availTypeForm.controls.availType.value"></create-avail-form>
+            </span>
+            <span *ngIf="availTypeForm.controls.availType.value == 'room'">
+                <span *ngFor="let roomTypeClientProgram of roomTypeClientProgramsSelected">
+                    <create-avail-form [roomTypeClientProgram]="roomTypeClientProgram" [availIsRoom]="availIsRoom" [availIsGlobal]="availIsGlobal" [availAdd]="availAdd" [availType]="availTypeForm.controls.availType.value"></create-avail-form>
+                </span>
+            </span>
+            <span (click)="addNewForm()">&oplus; Add new program</span>
+            <div class="row">
+                <button class="btn btn-secondary btn-sm" type="submit" [disabled]="!createAvailForm.valid">Submit</button>
             </div>
-        </span>    
-    <!-- <p>{{ periodsForm.status }} | {{this.periodsForm.value | json}}</p> -->
+            <div class="row nextStep">
+                <div class="col-md-1"><button type="button" class="button btn btn-secondary btn-sm" (click)="changeModalStep('showAvailType',false); createAvail.resetCheckboxes()">Back</button></div>
+            </div>
+        </span>
 </modal>
 </div>

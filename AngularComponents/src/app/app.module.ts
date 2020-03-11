@@ -23,6 +23,7 @@ import { ModalComponent } from './availability-new/modal-avail/modal-avail.compo
 import { MaterialModule } from 'material.module';
 import { ModalService } from './services/modal.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CreateAvailFormComponent } from './availability-new/create-avail/create-avail-form.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     DatesLoaderComponent,
     RequestPossibleTableComponent,
     ClientProgramAvailComponent,
-    ModalComponent
+    ModalComponent,
+    CreateAvailFormComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +60,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
   entryComponents: [YourInformationComponent,
   AvailabilityNewComponent,
-ModalComponent]
+ModalComponent,
+CreateAvailFormComponent]
 })
 export class AppModule { 
   constructor(private injector: Injector){}

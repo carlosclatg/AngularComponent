@@ -17,6 +17,7 @@ import { AvailabilityRow } from 'src/DTO/availabilityNew/availabilityRow';
 import { AvailabilityRowsByRoomType } from 'src/DTO/availabilityNew/availabilityRowsByRoomType';
 import { AvailabilityDetails } from 'src/DTO/availabilityNew/availabilityDetails';
 import { ReleaseRestriction } from 'src/DTO/availabilityNew/releaseRestriction';
+import { CreateAvailFormComponent } from './create-avail/create-avail-form.component';
 
 @Component({
   selector: 'availability-new',
@@ -123,6 +124,7 @@ export class AvailabilityNewComponent implements OnInit {
     stayMax:this.stayMaxFormArray,
   });
 
+  @ViewChild('CreateAvailFormComponent',null) createAvail:CreateAvailFormComponent;
   //constructor
   constructor(private availService:AvailabilityService,public dialog: MatDialog,private modalService: ModalService,
     private el: ElementRef, private fb: FormBuilder) { }
@@ -410,7 +412,7 @@ export class AvailabilityNewComponent implements OnInit {
   }
 
   addRoomType(roomId:any){
-    //console.debug("roomId"+roomId);
+    console.debug("roomId"+roomId);
     let rTypeClPrg:RoomTypeClientPrograms;
     let contains:boolean;
     for(let key of this.availAdd.mapRoomTypeDTOClientProgram.entries()){
@@ -477,6 +479,10 @@ export class AvailabilityNewComponent implements OnInit {
   changeCheckboxStatus(checkboxName:string,checkboxOppositeName:string,index:number){
     this[checkboxName].controls[index].setValue(!this[checkboxName].controls[index].value)
     this[checkboxOppositeName].controls[index].setValue(!this[checkboxOppositeName].controls[index].value)
+  }
+
+  addNewForm(){
+    
   }
 
 }
