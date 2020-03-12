@@ -310,8 +310,8 @@ export class CreateAvailFormComponent implements OnInit {
       this.createAvailForm.controls.weekDaysSu.setValue(!this.createAvailForm.controls.weekDaysSu.value);
       this.createAvailForm.controls.weekDaysSu2.setValue(!this.createAvailForm.controls.weekDaysSu2.value);
     }
-    this.createAvailForm.controls.this[checkboxName].setValue(!this.createAvailForm.controls.this[checkboxName].value);
-    this.createAvailForm.controls.this[checkboxOppositeName].setValue(!this.createAvailForm.controls.this[checkboxOppositeName].value);
+    //this.createAvailForm.controls.this[checkboxName].setValue(!this.createAvailForm.controls.this[checkboxName].value);
+    //this.createAvailForm.controls.this[checkboxOppositeName].setValue(!this.createAvailForm.controls.this[checkboxOppositeName].value);
   }
 
   resetCheckboxes(){
